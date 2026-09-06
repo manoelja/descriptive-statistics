@@ -247,6 +247,9 @@ export default function CyberBackground() {
       const microBarColor = isLight ? '21,128,61' : '74,222,128';
       const particleColor = isLight ? '13,148,136' : '45,212,191';
 
+      const lineAlphaMultiplier = 1.3;
+      const lineWidth = isLight ? 1.2 : 1;
+
       // Draw mouse glow
       if (mouse.active) {
         const glowGrad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 150);
@@ -268,14 +271,14 @@ export default function CyberBackground() {
 
       // Draw connections between nearby nodes
       const CONNECT_DIST = 150;
-      ctx.lineWidth = 0.8;
+      ctx.lineWidth = lineWidth;
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < CONNECT_DIST) {
-            const alpha = (1 - dist / CONNECT_DIST) * 0.15;
+            const alpha = (1 - dist / CONNECT_DIST) * 0.15 * lineAlphaMultiplier;
             ctx.strokeStyle = `rgba(${lineColor},${alpha})`;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -287,13 +290,13 @@ export default function CyberBackground() {
 
       // Draw connections from mouse to nearby nodes
       if (mouse.active) {
-        ctx.lineWidth = 1;
+        ctx.lineWidth = isLight ? 1.5 : 1.2;
         for (const n of nodes) {
           const dx = mouse.x - n.x;
           const dy = mouse.y - n.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 180) {
-            const alpha = (1 - dist / 180) * 0.4;
+            const alpha = (1 - dist / 180) * 0.4 * lineAlphaMultiplier;
             const grad = ctx.createLinearGradient(mouse.x, mouse.y, n.x, n.y);
             grad.addColorStop(0, `rgba(22, 163, 74, ${alpha})`);
             grad.addColorStop(1, `rgba(45, 212, 191, ${alpha * 0.5})`);
@@ -312,14 +315,14 @@ export default function CyberBackground() {
         const radius = n.r * pulse;
         // Glow
         const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius * 4);
-        grad.addColorStop(0, `hsla(${n.hue},70%,60%,0.15)`);
+        grad.addColorStop(0, `hsla(${n.hue},70%,60%,${isLight ? 0.25 : 0.2})`);
         grad.addColorStop(1, `hsla(${n.hue},70%,60%,0)`);
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.arc(n.x, n.y, radius * 4, 0, Math.PI * 2);
         ctx.fill();
         // Core
-        ctx.fillStyle = `rgba(${nodeColor},0.6)`;
+        ctx.fillStyle = `rgba(${nodeColor},${isLight ? 0.8 : 0.7})`;
         ctx.beginPath();
         ctx.arc(n.x, n.y, radius, 0, Math.PI * 2);
         ctx.fill();

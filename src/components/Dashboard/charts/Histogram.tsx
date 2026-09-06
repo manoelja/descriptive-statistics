@@ -4,31 +4,44 @@ import type { IdadeBin } from '../../../data/srag';
 
 interface HistogramProps {
   bins: IdadeBin[];
+  rawData?: number[];
   color?: string;
   label?: string;
 }
 
-export default function Histogram({ bins, color = '#16a34a', label }: HistogramProps) {
+export default function Histogram({ bins, rawData, color = '#16a34a', label }: HistogramProps) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const maxCount = useMemo(() => Math.max(...bins.map((b) => b.count), 1), [bins]);
   const totalCount = useMemo(() => bins.reduce((s, b) => s + b.count, 0), [bins]);
 
   const stats = useMemo(() => {
-    const flat: number[] = [];
-    for (const b of bins) {
-      for (let i = 0; i < b.count; i++) flat.push(b.binStart + 2.5);
+    const data = rawData && rawData.length > 0 ? rawData : [];
+    if (data.length === 0) {
+      const flat: number[] = [];
+      for (const b of bins) {
+        for (let i = 0; i < b.count; i++) flat.push(b.binStart + (b.binEnd - b.binStart) / 2);
+      }
+      if (flat.length === 0) return { mean: 0, median: 0, mode: 0, stddev: 0 };
+      const mean = flat.reduce((s, v) => s + v, 0) / flat.length;
+      const sorted = [...flat].sort((a, b) => a - b);
+      const mid = Math.floor(sorted.length / 2);
+      const median = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+      const modeBin = bins.reduce((max, b) => b.count > max.count ? b : max, bins[0]);
+      const mode = modeBin ? (modeBin.binStart + modeBin.binEnd) / 2 : 0;
+      const variance = flat.reduce((s, v) => s + (v - mean) ** 2, 0) / flat.length;
+      return { mean, median, mode, stddev: Math.sqrt(variance) };
     }
-    if (flat.length === 0) return { mean: 0, median: 0, mode: 0, stddev: 0 };
-    const mean = flat.reduce((s, v) => s + v, 0) / flat.length;
-    const sorted = [...flat].sort((a, b) => a - b);
+
+    const mean = data.reduce((s, v) => s + v, 0) / data.length;
+    const sorted = [...data].sort((a, b) => a - b);
     const mid = Math.floor(sorted.length / 2);
     const median = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
     const modeBin = bins.reduce((max, b) => b.count > max.count ? b : max, bins[0]);
-    const mode = modeBin ? modeBin.binStart + 2.5 : 0;
-    const variance = flat.reduce((s, v) => s + (v - mean) ** 2, 0) / flat.length;
+    const mode = modeBin ? (modeBin.binStart + modeBin.binEnd) / 2 : 0;
+    const variance = data.reduce((s, v) => s + (v - mean) ** 2, 0) / data.length;
     return { mean, median, mode, stddev: Math.sqrt(variance) };
-  }, [bins]);
+  }, [bins, rawData]);
 
   const W = 720;
   const H = 300;
@@ -80,8 +93,8 @@ export default function Histogram({ bins, color = '#16a34a', label }: HistogramP
               <stop offset="100%" stopColor={color} stopOpacity="0.45" />
             </linearGradient>
             <linearGradient id="barGradHover" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#22d3ee" stopOpacity="1" />
-              <stop offset="100%" stopColor="#22d3ee" stopOpacity="0.55" />
+              <stop offset="0%" stopColor="var(--histogram-bar-hover-from)" stopOpacity="1" />
+              <stop offset="100%" stopColor="var(--histogram-bar-hover-to)" stopOpacity="1" />
             </linearGradient>
             <filter id="barShadow">
               <feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.25" />
@@ -95,8 +108,8 @@ export default function Histogram({ bins, color = '#16a34a', label }: HistogramP
               <g key={i}>
                 <line
                   x1={pad.left} y1={y} x2={W - pad.right} y2={y}
-                  stroke="var(--grid-line)" strokeWidth="1"
-                  strokeDasharray={i === 0 ? 'none' : '3,3'}
+                  stroke="var(--grid-line)" strokeWidth="1.2"
+                  strokeDasharray={i === 0 ? 'none' : '4,4'}
                 />
                 <text
                   x={pad.left - 10} y={y + 3.5}
@@ -128,6 +141,7 @@ export default function Histogram({ bins, color = '#16a34a', label }: HistogramP
                   y={y}
                   width={Math.max(barW - 3, 2)}
                   height={barH}
+                  className={isHovered ? 'histogram-bar histogram-bar-hover' : 'histogram-bar'}
                   fill={isHovered ? 'url(#barGradHover)' : 'url(#barGrad)'}
                   rx="2"
                   filter={isHovered ? 'url(#barShadow)' : undefined}
@@ -214,7 +228,7 @@ export default function Histogram({ bins, color = '#16a34a', label }: HistogramP
           })()}
 
           {/* Axes */}
-          <line x1={pad.left} y1={pad.top + plotH} x2={W - pad.right} y2={pad.top + plotH} stroke="var(--grid-line-bold)" strokeWidth="1" />
+          <line x1={pad.left} y1={pad.top + plotH} x2={W - pad.right} y2={pad.top + plotH} stroke="var(--grid-line-bold)" strokeWidth="1.5" />
           <text x={W / 2} y={H - 6} fill="var(--text-muted)" fontSize="10" textAnchor="middle" fontWeight="600">
             Idade (anos)
           </text>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Github, Linkedin, User, X, Database, FileText } from 'lucide-react';
+import { Github, Linkedin, User, X } from 'lucide-react';
 import Flowchart from './Flowchart';
 import './Flowchart.css';
 import './Contact.css';
@@ -19,9 +19,9 @@ const aboutTitles: Record<string, string> = {
 };
 
 const aboutTexts: Record<string, string> = {
-  pt: 'Sou Manoel, Data Scientist. Acredito que dados bem contados geram impacto: transformo bases públicas em histórias visuais e ferramentas acessíveis. Este dashboard de SRAG 2026 foi construído do zero — da leitura do CSV em Node.js ao pipeline de processamento estatático e à interface interativa em React. Cada uma das 170.328 notificações foi analisada em 8 itens de estatística descritiva, desde tabelas de frequência até box-plots comparativos.',
-  en: "I'm Manoel, a Data Scientist. I believe well-told data creates impact: I turn public datasets into visual stories and accessible tools. This SRAG 2026 dashboard was built from scratch — from reading the CSV in Node.js to the statistical processing pipeline and the interactive React interface. Each of the 170,328 notifications was analyzed in 8 descriptive statistics items, from frequency tables to comparative box-plots.",
-  es: 'Soy Manoel, Data Scientist. Creo que los datos bien contados generan impacto: transformo bases públicas en historias visuales y herramientas accesibles. Este panel de SRAG 2026 fue construido desde cero — desde la lectura del CSV en Node.js hasta el pipeline de procesamiento estadístico y la interfaz interactiva en React. Cada una de las 170.328 notificaciones fue analizada en 8 ítems de estadística descriptiva, desde tablas de frecuencia hasta box-plots comparativos.',
+  pt: 'Sou Manoel, Data Scientist. Construí este dashboard do zero — do processamento do CSV ao frontend em React. Analisei 170.328 notificações de SRAG em 8 itens de estatística descritiva.',
+  en: "I'm Manoel, a Data Scientist. I built this dashboard from scratch — from CSV processing to the React frontend. I analyzed 170,328 SRAG notifications across 8 descriptive statistics items.",
+  es: 'Soy Manoel, Data Scientist. Construí este panel desde cero — del procesamiento del CSV al frontend en React. Analicé 170.328 notificaciones de SRAG en 8 ítems de estadística descriptiva.',
 };
 
 const copyrightTexts: Record<string, string> = {
@@ -50,27 +50,6 @@ const Contact = () => {
             <p className="footer-desc">{t('footer.description')}</p>
 
             <p className="footer-author-credit">{authorLabels[lang] || authorLabels['pt']}</p>
-
-            <div className="footer-data-links">
-              <a
-                href="https://dadosabertos.saude.gov.br/dataset/srag-2019-a-2026"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="data-link"
-                title="Portal de Dados Abertos do SUS"
-              >
-                <Database size={20} />
-              </a>
-              <a
-                href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/sivep-gripe"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="data-link"
-                title="Documentação SIVEP-Gripe"
-              >
-                <FileText size={20} />
-              </a>
-            </div>
 
             <div className="footer-social-icons">
               <motion.a

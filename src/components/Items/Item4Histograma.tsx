@@ -43,7 +43,7 @@ const Item4Histograma = () => {
             const y = pad.top + plotH - (tick / maxDensity) * plotH;
             return (
               <g key={i}>
-                <line x1={pad.left} y1={y} x2={W - pad.right} y2={y} stroke="var(--grid-line)" strokeWidth="1" />
+                <line x1={pad.left} y1={y} x2={W - pad.right} y2={y} stroke="var(--grid-line)" strokeWidth="1.2" strokeDasharray="4,4" />
                 <text x={pad.left - 8} y={y + 4} fill="var(--text-secondary)" fontSize="9" textAnchor="end" fontFamily="monospace">
                   {tick.toFixed(4)}
                 </text>
@@ -63,9 +63,10 @@ const Item4Histograma = () => {
                   y={y}
                   width={barW - 2}
                   height={barH}
-                  fill="rgba(22, 163, 74, 0.6)"
-                  stroke="rgba(22, 163, 74, 0.8)"
-                  strokeWidth="0.5"
+                  className="histogram-bar"
+                  fill="var(--accent-color)"
+                  stroke="var(--accent-color)"
+                  strokeWidth="0.8"
                   rx="2"
                   initial={{ height: 0, y: pad.top + plotH }}
                   whileInView={{ height: barH, y }}
@@ -83,7 +84,7 @@ const Item4Histograma = () => {
           })}
 
           {/* X axis line */}
-          <line x1={pad.left} y1={pad.top + plotH} x2={W - pad.right} y2={pad.top + plotH} stroke="var(--grid-line-bold)" strokeWidth="1" />
+          <line x1={pad.left} y1={pad.top + plotH} x2={W - pad.right} y2={pad.top + plotH} stroke="var(--grid-line-bold)" strokeWidth="1.5" />
 
           {/* Axis labels */}
           <text x={W / 2} y={H - 5} fill="var(--text-secondary)" fontSize="10" textAnchor="middle" fontWeight="600">

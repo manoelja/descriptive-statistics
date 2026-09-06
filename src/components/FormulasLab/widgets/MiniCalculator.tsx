@@ -73,9 +73,11 @@ const InputWithArrows = ({
 
   return (
     <div className="calc-row">
-      <label>{label}</label>
+      <label htmlFor={`calc-${label}`}>{label}</label>
       <div className="input-wrapper" onClick={handleStopPropagation}>
         <input
+          id={`calc-${label}`}
+          name={`calc-${label}`}
           type="text"
           inputMode="numeric"
           value={value}

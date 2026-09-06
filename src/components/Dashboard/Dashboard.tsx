@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import {
   filtrosVazios, filtrarDados, buildHistogram, buildFrequency, buildCrossTab,
+  buildIdadeSexoCrossTab, buildSexoClassificacaoCrossTab, buildRacaSexoCrossTab,
+  buildClassificacaoSexoCrossTab, buildEvolucaoSexoCrossTab,
   SEXO_LABELS, RACA_LABELS, CLASSIFICACAO_LABELS, EVOLUCAO_LABELS,
   CLASSIFICACAO_COLORS, RACA_COLORS, EVOLUCAO_COLORS,
   FAIXA_ETARIA_OPTIONS, COL,
@@ -141,15 +143,18 @@ const Dashboard = () => {
           label: f.label, value: f.count,
           color: f.category === 'M' ? chartColor('--chart-masculino', '#22d3ee') : f.category === 'F' ? chartColor('--chart-feminino', '#f472b6') : '#a1a1aa',
         }));
+        const crossTab = buildSexoClassificacaoCrossTab(dadosFiltrados);
         return {
           title: 'Distribuição por Sexo',
           donut: sexoData,
           bar: sexoData,
           hbar: sexoData,
+          crossTab,
         };
       }
       case 'idade': {
         const hist = buildHistogram(dadosFiltrados);
+        const crossTab = buildIdadeSexoCrossTab(dadosFiltrados);
         // Top 10 faixas para bar/hbar
         const topBins = [...hist].sort((a, b) => b.count - a.count).slice(0, 10).map((b) => ({
           label: b.label, value: b.count, color: chartColor('--chart-masculino', '#22d3ee'),
@@ -159,10 +164,12 @@ const Dashboard = () => {
           histogram: hist,
           bar: topBins,
           hbar: topBins,
+          crossTab,
         };
       }
       case 'raca': {
         const freq = buildFrequency(dadosFiltrados, COL.raca, RACA_LABELS);
+        const crossTab = buildRacaSexoCrossTab(dadosFiltrados);
         return {
           title: 'Distribuição por Raça/Cor',
           hbar: freq.filter((f) => f.category !== '9').map((f) => ({
@@ -174,10 +181,12 @@ const Dashboard = () => {
           donut: freq.filter((f) => f.category !== '9').map((f) => ({
             label: f.label, value: f.count, color: RACA_COLORS[f.label] || '#a1a1aa',
           })),
+          crossTab,
         };
       }
       case 'classificacao': {
         const freq = buildFrequency(dadosFiltrados, COL.classificacao, CLASSIFICACAO_LABELS);
+        const crossTab = buildClassificacaoSexoCrossTab(dadosFiltrados);
         return {
           title: 'Classificação Final',
           bar: freq.filter((f) => f.category !== '').map((f) => ({
@@ -192,10 +201,12 @@ const Dashboard = () => {
             label: f.label.length > 20 ? f.label.substring(0, 18) + '…' : f.label,
             value: f.count, color: CLASSIFICACAO_COLORS[f.label] || '#a1a1aa',
           })),
+          crossTab,
         };
       }
       case 'evolucao': {
         const freq = buildFrequency(dadosFiltrados, COL.evolucao, EVOLUCAO_LABELS);
+        const crossTab = buildEvolucaoSexoCrossTab(dadosFiltrados);
         return {
           title: 'Evolução',
           donut: freq.filter((f) => f.category !== '9').map((f) => ({
@@ -207,6 +218,7 @@ const Dashboard = () => {
           hbar: freq.filter((f) => f.category !== '9' && f.category !== '').map((f) => ({
             label: f.label, value: f.count, color: EVOLUCAO_COLORS[f.label] || '#a1a1aa',
           })),
+          crossTab,
         };
       }
       case 'vacinaUTI': {
@@ -271,7 +283,8 @@ const Dashboard = () => {
     if (idades.length > 0) {
       const mean = idades.reduce((a, b) => a + b, 0) / idades.length;
       const sorted = [...idades].sort((a, b) => a - b);
-      const median = sorted[Math.floor(sorted.length / 2)];
+      const mid = Math.floor(sorted.length / 2);
+      const median = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
       result.push({ type: 'high', text: `Média de idade: ${mean.toFixed(1)} · Mediana: ${median}.` });
     }
 
@@ -343,7 +356,7 @@ const Dashboard = () => {
           {/* ── Sub-filtros ── */}
           {activeFilters.includes('sexo') && (
             <motion.div className="secondary-filters" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
-              <label className="control-label">Sexo</label>
+              <span className="control-label">Sexo</span>
               <div className="control-buttons secondary-btns">
                 {[
                   { val: '', label: 'Todos' },
@@ -365,7 +378,7 @@ const Dashboard = () => {
 
           {activeFilters.includes('faixa') && (
             <motion.div className="secondary-filters" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
-              <label className="control-label">Faixa Etária</label>
+              <span className="control-label">Faixa Etária</span>
               <div className="control-buttons secondary-btns">
                 <button className={`control-btn ${filtros.faixa.length === 0 ? 'active' : ''}`} onClick={() => toggleFiltroValor('faixa', '')}>Todas</button>
                 {FAIXA_ETARIA_OPTIONS.map((fx) => (
@@ -379,7 +392,7 @@ const Dashboard = () => {
 
           {activeFilters.includes('raca') && (
             <motion.div className="secondary-filters" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
-              <label className="control-label">Raça/Cor</label>
+              <span className="control-label">Raça/Cor</span>
               <div className="control-buttons secondary-btns">
                 <button className={`control-btn ${filtros.raca.length === 0 ? 'active' : ''}`} onClick={() => toggleFiltroValor('raca', '')}>Todas</button>
                 {Object.entries(RACA_LABELS).map(([code, label]) => (
@@ -394,7 +407,7 @@ const Dashboard = () => {
 
           {activeFilters.includes('classificacao') && (
             <motion.div className="secondary-filters" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
-              <label className="control-label">Classificação</label>
+              <span className="control-label">Classificação</span>
               <div className="control-buttons secondary-btns">
                 <button className={`control-btn ${filtros.classificacao.length === 0 ? 'active' : ''}`} onClick={() => toggleFiltroValor('classificacao', '')}>Todas</button>
                 {Object.entries(CLASSIFICACAO_LABELS).map(([code, label]) => (
@@ -409,7 +422,7 @@ const Dashboard = () => {
 
           {activeFilters.includes('vacina') && (
             <motion.div className="secondary-filters" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
-              <label className="control-label">Vacina</label>
+              <span className="control-label">Vacina</span>
               <div className="control-buttons secondary-btns">
                 <button className={`control-btn ${filtros.vacina.length === 0 ? 'active' : ''}`} onClick={() => toggleFiltroValor('vacina', '')}>Todos</button>
                 <button className={`control-btn ${filtros.vacina.includes('1') ? 'active' : ''}`} onClick={() => toggleFiltroValor('vacina', '1')}>Sim</button>
@@ -420,7 +433,7 @@ const Dashboard = () => {
 
           {activeFilters.includes('uti') && (
             <motion.div className="secondary-filters" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
-              <label className="control-label">UTI</label>
+              <span className="control-label">UTI</span>
               <div className="control-buttons secondary-btns">
                 <button className={`control-btn ${filtros.uti.length === 0 ? 'active' : ''}`} onClick={() => toggleFiltroValor('uti', '')}>Todos</button>
                 <button className={`control-btn ${filtros.uti.includes('1') ? 'active' : ''}`} onClick={() => toggleFiltroValor('uti', '1')}>Sim</button>
@@ -432,7 +445,7 @@ const Dashboard = () => {
           {/* ── Dimensão + Tipo de Gráfico ── */}
           <div className="controls-grid">
             <div className="control-group">
-              <label className="control-label">Dimensão</label>
+              <span className="control-label">Dimensão</span>
               <div className="control-buttons">
                 {DIMENSOES.map((d) => (
                   <button key={d.key} className={`control-btn ${dimensao === d.key ? 'active' : ''}`} onClick={() => mudarDimensao(d.key)}>
@@ -444,13 +457,13 @@ const Dashboard = () => {
 
             {dimensao !== null && (
               <div className="control-group">
-                <label className="control-label">Gráfico</label>
+                <span className="control-label">Gráfico</span>
                 <div className="control-buttons chart-type-btns">
                   {CHART_TYPES
                     .filter((c) => {
                       if (dimensao === 'vacinaUTI') return c.type === 'hbar' || c.type === 'table';
-                      if (dimensao !== 'idade') return c.type !== 'histogram';
-                      return true;
+                      if (dimensao === 'idade') return c.type !== 'donut';
+                      return c.type !== 'histogram';
                     })
                     .map((c) => (
                       <button key={c.type} className={`control-btn chart-btn ${chartType === c.type ? 'active' : ''}`} onClick={() => setChartType(c.type)}>
@@ -559,7 +572,10 @@ const Dashboard = () => {
 
                 {/* ── Histograma ── */}
                 {chartType === 'histogram' && 'histogram' in chartData && (
-                  <Histogram bins={chartData.histogram!} />
+                  <Histogram
+                    bins={chartData.histogram!}
+                    rawData={dadosFiltrados.map((r) => r[COL.idade]).filter((v) => v >= 0)}
+                  />
                 )}
 
                 {/* ── Donut ── */}

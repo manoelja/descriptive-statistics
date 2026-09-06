@@ -39,35 +39,6 @@
   font-family: monospace;
 }
 
-/* Data links */
-.footer-data-links {
-  display: flex;
-  gap: 0.8rem;
-  margin-bottom: 1.2rem;
-}
-
-.data-link {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--card-border);
-  border-radius: var(--cyber-radius);
-  color: var(--text-secondary);
-  transition: var(--transition);
-}
-
-.data-link:hover {
-  border-color: var(--accent-color);
-  color: var(--accent-color);
-  background: var(--accent-soft);
-}
-
-.data-link svg {
-  opacity: 1;
-}
-
 /* Social icons */
 .footer-social-icons {
   display: flex;

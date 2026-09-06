@@ -29,6 +29,18 @@ export const CLASSIFICACAO_LABELS: Record<string, string> = {
 };
 export const FAIXA_ETARIA_OPTIONS = ['0-9', '10-19', '20-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80+'];
 
+export const FAIXA_ETARIA_LABELS: Record<string, string> = {
+  '0-9': '0–9 anos',
+  '10-19': '10–19 anos',
+  '20-29': '20–29 anos',
+  '30-39': '30–39 anos',
+  '40-49': '40–49 anos',
+  '50-59': '50–59 anos',
+  '60-69': '60–69 anos',
+  '70-79': '70–79 anos',
+  '80+': '80+ anos',
+};
+
 // Mapeamento de código de faixa etária para ranges de idade
 const FAIXA_RANGES: Record<string, [number, number]> = {
   '0-9': [0, 9], '10-19': [10, 19], '20-29': [20, 29], '30-39': [30, 39],
@@ -91,17 +103,20 @@ export function buildFrequency(rows: SRAGRow[], colIdx: number, labelMap?: Recor
 }
 
 /**
- * Constrói um histograma de idade (bins de 5 anos) a partir dos dados filtrados.
+ * Constrói um histograma de idade (bins de 10 anos) a partir dos dados filtrados.
  */
 export function buildHistogram(rows: SRAGRow[]): IdadeBin[] {
   const idades = rows.map((r) => r[1]).filter((v) => v >= 0);
   const total = idades.length;
+  let maxAge = 0;
+  for (const idade of idades) { if (idade > maxAge) maxAge = idade; }
+  const numBins = Math.ceil((maxAge + 1) / 10);
   const bins: IdadeBin[] = [];
-  for (let i = 0; i <= 100; i += 5) {
-    const binStart = i;
-    const binEnd = i + 5;
-    const count = idades.filter((v) => i === 100 ? v >= binStart && v <= binEnd : v >= binStart && v < binEnd).length;
-    const density = total > 0 ? count / (total * 5) : 0;
+  for (let i = 0; i < numBins; i++) {
+    const binStart = i * 10;
+    const binEnd = binStart + 10;
+    const count = idades.filter((v) => v >= binStart && v < binEnd).length;
+    const density = total > 0 ? count / (total * 10) : 0;
     bins.push({
       binStart,
       binEnd,
@@ -111,6 +126,259 @@ export function buildHistogram(rows: SRAGRow[]): IdadeBin[] {
     });
   }
   return bins;
+}
+
+/**
+ * Constrói tabela cruzada de Faixa Etária × Sexo.
+ */
+export function buildIdadeSexoCrossTab(rows: SRAGRow[]): CrossTabCell[] {
+  const faixaRanges = [
+    { key: '0-9', min: 0, max: 9 },
+    { key: '10-19', min: 10, max: 19 },
+    { key: '20-29', min: 20, max: 29 },
+    { key: '30-39', min: 30, max: 39 },
+    { key: '40-49', min: 40, max: 49 },
+    { key: '50-59', min: 50, max: 59 },
+    { key: '60-69', min: 60, max: 69 },
+    { key: '70-79', min: 70, max: 79 },
+    { key: '80+', min: 80, max: 150 },
+  ];
+  const sexoLabels: Record<string, string> = { M: 'Masculino', F: 'Feminino' };
+
+  const cellCounts: Record<string, number> = {};
+  const rowTotals: Record<string, number> = {};
+  const colTotals: Record<string, number> = {};
+  let grandTotal = 0;
+
+  for (const r of rows) {
+    const idade = r[COL.idade];
+    const sexo = String(r[COL.sexo]);
+    if (idade < 0 || !sexoLabels[sexo]) continue;
+    const faixa = faixaRanges.find((f) => idade >= f.min && idade <= f.max);
+    if (!faixa) continue;
+    const key = `${faixa.key}|${sexo}`;
+    cellCounts[key] = (cellCounts[key] || 0) + 1;
+    rowTotals[faixa.key] = (rowTotals[faixa.key] || 0) + 1;
+    colTotals[sexo] = (colTotals[sexo] || 0) + 1;
+    grandTotal++;
+  }
+
+  const result: CrossTabCell[] = [];
+  for (const faixa of faixaRanges) {
+    for (const [sexoCode, sexoLabel] of Object.entries(sexoLabels)) {
+      const key = `${faixa.key}|${sexoCode}`;
+      const count = cellCounts[key] || 0;
+      const rowTotal = rowTotals[faixa.key] || 1;
+      const colTotal = colTotals[sexoCode] || 1;
+      result.push({
+        row: `Faixa Etária: ${FAIXA_ETARIA_LABELS[faixa.key]}`,
+        col: `Sexo: ${sexoLabel}`,
+        count,
+        rowPercent: Math.round((count / rowTotal) * 10000) / 100,
+        colPercent: Math.round((count / colTotal) * 10000) / 100,
+        rowTotal,
+        colTotal,
+        grandTotal,
+      });
+    }
+  }
+  return result;
+}
+
+/**
+ * Constrói tabela cruzada de Sexo × Classificação.
+ */
+export function buildSexoClassificacaoCrossTab(rows: SRAGRow[]): CrossTabCell[] {
+  const sexoLabels: Record<string, string> = { M: 'Masculino', F: 'Feminino' };
+  const filtered = rows.filter((r) => {
+    const sexo = String(r[COL.sexo]);
+    const classif = String(r[COL.classificacao]);
+    return sexoLabels[sexo] && CLASSIFICACAO_LABELS[classif] && classif !== '9';
+  });
+
+  const cellCounts: Record<string, number> = {};
+  const rowTotals: Record<string, number> = {};
+  const colTotals: Record<string, number> = {};
+  let grandTotal = 0;
+
+  for (const r of filtered) {
+    const sexo = String(r[COL.sexo]);
+    const classif = String(r[COL.classificacao]);
+    const key = `${sexo}|${classif}`;
+    cellCounts[key] = (cellCounts[key] || 0) + 1;
+    rowTotals[sexo] = (rowTotals[sexo] || 0) + 1;
+    colTotals[classif] = (colTotals[classif] || 0) + 1;
+    grandTotal++;
+  }
+
+  const result: CrossTabCell[] = [];
+  for (const [sexoCode, sexoLabel] of Object.entries(sexoLabels)) {
+    for (const [classifCode, classifLabel] of Object.entries(CLASSIFICACAO_LABELS)) {
+      if (classifCode === '9') continue;
+      const key = `${sexoCode}|${classifCode}`;
+      const count = cellCounts[key] || 0;
+      const rowTotal = rowTotals[sexoCode] || 1;
+      const colTotal = colTotals[classifCode] || 1;
+      result.push({
+        row: `Sexo: ${sexoLabel}`,
+        col: `Classificação: ${classifLabel}`,
+        count,
+        rowPercent: Math.round((count / rowTotal) * 10000) / 100,
+        colPercent: Math.round((count / colTotal) * 10000) / 100,
+        rowTotal,
+        colTotal,
+        grandTotal,
+      });
+    }
+  }
+  return result;
+}
+
+/**
+ * Constrói tabela cruzada de Raça/Cor × Sexo.
+ */
+export function buildRacaSexoCrossTab(rows: SRAGRow[]): CrossTabCell[] {
+  const sexoLabels: Record<string, string> = { M: 'Masculino', F: 'Feminino' };
+  const filtered = rows.filter((r) => {
+    const raca = String(r[COL.raca]);
+    const sexo = String(r[COL.sexo]);
+    return RACA_LABELS[raca] && sexoLabels[sexo] && raca !== '9';
+  });
+
+  const cellCounts: Record<string, number> = {};
+  const rowTotals: Record<string, number> = {};
+  const colTotals: Record<string, number> = {};
+  let grandTotal = 0;
+
+  for (const r of filtered) {
+    const raca = String(r[COL.raca]);
+    const sexo = String(r[COL.sexo]);
+    const key = `${raca}|${sexo}`;
+    cellCounts[key] = (cellCounts[key] || 0) + 1;
+    rowTotals[raca] = (rowTotals[raca] || 0) + 1;
+    colTotals[sexo] = (colTotals[sexo] || 0) + 1;
+    grandTotal++;
+  }
+
+  const result: CrossTabCell[] = [];
+  for (const [racaCode, racaLabel] of Object.entries(RACA_LABELS)) {
+    if (racaCode === '9') continue;
+    for (const [sexoCode, sexoLabel] of Object.entries(sexoLabels)) {
+      const key = `${racaCode}|${sexoCode}`;
+      const count = cellCounts[key] || 0;
+      const rowTotal = rowTotals[racaCode] || 1;
+      const colTotal = colTotals[sexoCode] || 1;
+      result.push({
+        row: `Raça/Cor: ${racaLabel}`,
+        col: `Sexo: ${sexoLabel}`,
+        count,
+        rowPercent: Math.round((count / rowTotal) * 10000) / 100,
+        colPercent: Math.round((count / colTotal) * 10000) / 100,
+        rowTotal,
+        colTotal,
+        grandTotal,
+      });
+    }
+  }
+  return result;
+}
+
+/**
+ * Constrói tabela cruzada de Classificação × Sexo.
+ */
+export function buildClassificacaoSexoCrossTab(rows: SRAGRow[]): CrossTabCell[] {
+  const sexoLabels: Record<string, string> = { M: 'Masculino', F: 'Feminino' };
+  const filtered = rows.filter((r) => {
+    const classif = String(r[COL.classificacao]);
+    const sexo = String(r[COL.sexo]);
+    return CLASSIFICACAO_LABELS[classif] && sexoLabels[sexo] && classif !== '9';
+  });
+
+  const cellCounts: Record<string, number> = {};
+  const rowTotals: Record<string, number> = {};
+  const colTotals: Record<string, number> = {};
+  let grandTotal = 0;
+
+  for (const r of filtered) {
+    const classif = String(r[COL.classificacao]);
+    const sexo = String(r[COL.sexo]);
+    const key = `${classif}|${sexo}`;
+    cellCounts[key] = (cellCounts[key] || 0) + 1;
+    rowTotals[classif] = (rowTotals[classif] || 0) + 1;
+    colTotals[sexo] = (colTotals[sexo] || 0) + 1;
+    grandTotal++;
+  }
+
+  const result: CrossTabCell[] = [];
+  for (const [classifCode, classifLabel] of Object.entries(CLASSIFICACAO_LABELS)) {
+    if (classifCode === '9') continue;
+    for (const [sexoCode, sexoLabel] of Object.entries(sexoLabels)) {
+      const key = `${classifCode}|${sexoCode}`;
+      const count = cellCounts[key] || 0;
+      const rowTotal = rowTotals[classifCode] || 1;
+      const colTotal = colTotals[sexoCode] || 1;
+      result.push({
+        row: `Classificação: ${classifLabel}`,
+        col: `Sexo: ${sexoLabel}`,
+        count,
+        rowPercent: Math.round((count / rowTotal) * 10000) / 100,
+        colPercent: Math.round((count / colTotal) * 10000) / 100,
+        rowTotal,
+        colTotal,
+        grandTotal,
+      });
+    }
+  }
+  return result;
+}
+
+/**
+ * Constrói tabela cruzada de Evolução × Sexo.
+ */
+export function buildEvolucaoSexoCrossTab(rows: SRAGRow[]): CrossTabCell[] {
+  const sexoLabels: Record<string, string> = { M: 'Masculino', F: 'Feminino' };
+  const filtered = rows.filter((r) => {
+    const evolucao = String(r[COL.evolucao]);
+    const sexo = String(r[COL.sexo]);
+    return EVOLUCAO_LABELS[evolucao] && sexoLabels[sexo] && evolucao !== '9';
+  });
+
+  const cellCounts: Record<string, number> = {};
+  const rowTotals: Record<string, number> = {};
+  const colTotals: Record<string, number> = {};
+  let grandTotal = 0;
+
+  for (const r of filtered) {
+    const evolucao = String(r[COL.evolucao]);
+    const sexo = String(r[COL.sexo]);
+    const key = `${evolucao}|${sexo}`;
+    cellCounts[key] = (cellCounts[key] || 0) + 1;
+    rowTotals[evolucao] = (rowTotals[evolucao] || 0) + 1;
+    colTotals[sexo] = (colTotals[sexo] || 0) + 1;
+    grandTotal++;
+  }
+
+  const result: CrossTabCell[] = [];
+  for (const [evolCode, evolLabel] of Object.entries(EVOLUCAO_LABELS)) {
+    if (evolCode === '9') continue;
+    for (const [sexoCode, sexoLabel] of Object.entries(sexoLabels)) {
+      const key = `${evolCode}|${sexoCode}`;
+      const count = cellCounts[key] || 0;
+      const rowTotal = rowTotals[evolCode] || 1;
+      const colTotal = colTotals[sexoCode] || 1;
+      result.push({
+        row: `Evolução: ${evolLabel}`,
+        col: `Sexo: ${sexoLabel}`,
+        count,
+        rowPercent: Math.round((count / rowTotal) * 10000) / 100,
+        colPercent: Math.round((count / colTotal) * 10000) / 100,
+        rowTotal,
+        colTotal,
+        grandTotal,
+      });
+    }
+  }
+  return result;
 }
 
 /**

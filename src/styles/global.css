@@ -75,6 +75,12 @@
   --chart-obito: #f87171;
   --chart-obito-outras: #fbbf24;
   --chart-default: #2dd4bf;
+
+  /* Histogram */
+  --histogram-bar-from: rgba(22, 163, 74, 0.95);
+  --histogram-bar-to: rgba(22, 163, 74, 0.55);
+  --histogram-bar-hover-from: #22d3ee;
+  --histogram-bar-hover-to: rgba(34, 211, 238, 0.65);
 }
 
 html.light-theme {
@@ -85,10 +91,10 @@ html.light-theme {
   --accent-hover: #166534;
   --text-primary: #0a1f0d;
   --text-secondary: #2d5a3a;
-  --text-muted: #5a7a64;
+  --text-muted: #3a5c46;
   --bg-tooltip: rgba(10,31,13,0.92);
-  --grid-line: rgba(0,0,0,0.07);
-  --grid-line-bold: rgba(0,0,0,0.16);
+  --grid-line: rgba(0,0,0,0.28);
+  --grid-line-bold: rgba(0,0,0,0.45);
   --card-bg: rgba(255,255,255,0.6);
   --card-border: rgba(21, 128, 61, 0.2);
   --glass-bg: rgba(240, 253, 244, 0.95);
@@ -116,6 +122,12 @@ html.light-theme {
   --chart-obito: #dc2626;
   --chart-obito-outras: #d97706;
   --chart-default: #0d9488;
+
+  /* Histogram */
+  --histogram-bar-from: rgba(21, 128, 61, 1);
+  --histogram-bar-to: rgba(21, 128, 61, 0.72);
+  --histogram-bar-hover-from: #0891b2;
+  --histogram-bar-hover-to: rgba(8, 145, 178, 0.75);
 }
 
 * {
