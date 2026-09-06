@@ -1,0 +1,247 @@
+.flowchart-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Pipeline section */
+.pipeline-section {
+  background: var(--glass-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  overflow-x: auto;
+  cursor: default;
+}
+
+.pipeline-header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.pipeline-tag {
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+}
+
+.pipeline-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Track */
+.pipeline-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+/* Node */
+.pipeline-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1;
+  min-width: 60px;
+  position: relative;
+}
+
+/* Flash indicator */
+.step-flash {
+  position: absolute;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.4) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.node-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-bottom: 0.2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.node-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  position: relative;
+  z-index: 1;
+}
+
+.node-icon svg {
+  opacity: 1;
+}
+
+.node-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  line-height: 1.2;
+  position: relative;
+  z-index: 1;
+}
+
+.label-title {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.label-sub {
+  font-size: 0.5rem;
+  color: var(--text-secondary);
+  font-family: monospace;
+}
+
+/* Connector between nodes */
+.node-connector {
+  position: absolute;
+  right: -50%;
+  top: 14px;
+  width: 100%;
+  height: 2px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.connector-line {
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+}
+
+/* ========== TABLET (769px - 1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .pipeline-node {
+    min-width: 55px;
+  }
+
+  .node-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .label-title {
+    font-size: 0.55rem;
+  }
+
+  .label-sub {
+    font-size: 0.48rem;
+  }
+}
+
+/* ========== MOBILE (max-width: 768px) ========== */
+@media (max-width: 768px) {
+  .pipeline-section {
+    padding: 0.6rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pipeline-header-row {
+    margin-bottom: 0.5rem;
+  }
+
+  .pipeline-tag {
+    font-size: 0.5rem;
+    padding: 0.15rem 0.4rem;
+  }
+
+  .pipeline-title {
+    font-size: 0.6rem;
+  }
+
+  .pipeline-track {
+    gap: 0;
+    padding: 0.3rem 0;
+    min-width: max-content;
+  }
+
+  .pipeline-node {
+    min-width: 42px;
+    gap: 0.2rem;
+  }
+
+  .step-flash {
+    width: 28px;
+    height: 28px;
+  }
+
+  .node-dot {
+    width: 4px;
+    height: 4px;
+  }
+
+  .node-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .node-icon svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .label-title {
+    font-size: 0.42rem;
+  }
+
+  .label-sub {
+    font-size: 0.38rem;
+  }
+
+  .node-connector {
+    top: 10px;
+  }
+}
+
+/* ========== SMALL MOBILE (max-width: 480px) ========== */
+@media (max-width: 480px) {
+  .pipeline-node {
+    min-width: 38px;
+  }
+
+  .node-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .node-icon svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .label-title {
+    font-size: 0.38rem;
+  }
+
+  .label-sub {
+    font-size: 0.34rem;
+  }
+}
