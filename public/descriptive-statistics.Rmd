@@ -1,0 +1,477 @@
+---
+title: "Análise de Dados de Estatística Descritiva"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+---
+
+
+# Atividade 
+
+
+## Conjunto de dados - Síndrome Respiratória Aguda Grave (SRAG) - 2026
+
+O Ministério da Saúde, por meio do Sistema de Informação da Vigilância Epidemiológica da Gripe (SIVEP-Gripe), realiza a vigilância dos casos e óbitos por Síndrome Respiratória Aguda Grave (SRAG) no Brasil. O sistema registra casos hospitalizados e óbitos por SRAG associados a vírus respiratórios de importância em saúde pública, como influenza, SARS-CoV-2 (Covid-19), vírus sincicial respiratório (VSR), rinovírus, entre outros. Para a atividade avaliativa será utilizado o conjunto de dados referente às notificações de SRAG do ano de 2026. Os dados foram obtidos no Portal de Dados Abertos do SUS, disponível em https://dadosabertos.saude.gov.br/dataset/srag-2019-a-2026 (acesso e download em 23/07/2026). O conjunto de dados e seu respectivo dicionário de variáveis foram disponibilizados no Moodle Ipê.
+
+
+## Descrição das variáveis
+
+As variáveis que serão utilizadas na atividade, bem como sua descrição e categorias, estão relacionadas a seguir:
+
+
+
+### CS_SEXO
+
+**Nome do campo:** Sexo
+
+**Categorias:**
+
+- 1 - Masculino
+- 2 - Feminino
+- 9 - Ignorado
+
+**Descrição:** Sexo do paciente.
+
+---
+
+### NU_IDADE_N
+
+**Nome do campo:** Idade
+
+**Categorias:**
+
+Variável quantitativa (idade em anos).
+
+**Descrição:**  Idade informada pelo paciente quando não se sabe a data de nascimento. Se digitada a data de nascimento, a idade é calculada e preenchida automaticamente pelo sistema. Na falta desse dado é registrada a idade aparente.
+
+---
+
+### CS_RACA
+
+**Nome do campo:** Raça/Cor
+
+**Categorias:**
+
+- 1 - Branca
+- 2 - Preta
+- 3 - Amarela
+- 4 - Parda
+- 5 - Indígena
+- 9 - Ignorado
+
+**Descrição:**  Cor ou raça declarada pelo paciente: Branca; Preta; Amarela; Parda (pessoa que se declarou mulata, cabocla, cafuza, mameluca ou mestiça de preto com pessoa de outra cor ou raça); Indígena.
+
+---
+
+### VACINA
+
+**Nome do campo:** Recebeu vacina contra gripe na última campanha?
+
+**Categorias:**
+
+- 1 - Sim
+- 2 - Não
+- 9 - Ignorado
+
+**Descrição:** Informar se o paciente foi vacinado contra gripe na última campanha, após verificar a documentação/caderneta. Caso o paciente não tenha a caderneta, direcionar a pergunta para ele ou seu responsável e preencher o campo com o código correspondente à resposta.
+
+---
+
+### UTI
+
+**Nome do campo:** Internado em UTI?
+
+**Categorias:**
+
+- 1 - Sim
+- 2 - Não
+- 9 - Ignorado
+
+**Descrição:**  O paciente foi internado em UTI?
+
+---
+
+### CLASSI_FIN
+
+**Nome do campo:** Classificação final do caso
+
+**Categorias:**
+
+- 1 - SRAG por influenza
+- 2 - SRAG por outro vírus respiratório
+- 3 - SRAG por outro agente etiológico
+- 4 - SRAG não especificado
+- 5 - SRAG por COVID-19
+
+**Descrição:**  Diagnóstico final do caso. Se houver resultados divergentes entre as metodologias laboratoriais, priorizar o resultado do RT-PCR.
+
+---
+
+### EVOLUCAO
+
+**Nome do campo:** Evolução do caso
+
+**Categorias:**
+
+- 1 - Cura
+- 2 - Óbito
+- 3 - Óbito por outras causas
+- 9 - Ignorado
+
+**Descrição:** Evolução do caso.
+
+---
+
+Além disso, para facilitar, a tabela a seguir detalha as variáveis necessárias para cada item.  
+
+
+| Nome da variável | Item |
+|:-----------------|:----:|
+| **CS_SEXO** | 1, 8 |
+| **NU_IDADE_N** | 4, 5, 8 |
+| **CS_RACA** | 2 |
+| **VACINA** | 7 |
+| **UTI** | 7 |
+| **CLASSI_FIN** | 3 |
+| **EVOLUCAO** | 6 |
+
+
+---
+
+- A  Atividade Avaliativa consiste nos itens a seguir.
+
+## Itens 
+
+Desenvolva e/ou responda os itens a seguir.
+
+#### Item 1 - Faça uma tabela de frequências da variável sexo (CS_SEXO) e responda à seguinte pergunta: Qual é a porcentagem de pessoas com notificações de SRAG do ano de 2026 são do sexo feminino e do sexo masculino? Utilize duas casas decimais. 
+
+
+#### Item 2 - Faça uma tabela de frequências da variável Raça/cor (CS_RACA) e responda à seguinte pergunta:  qual a categoria (Raça/cor) que apresenta a maior proporção de notificações de SRAG do ano de 2026? Informe essa proporção utilizando quatro casas decimais. 
+
+
+#### Item 3 - Faça um gráfico em barras para a variável "Classificação final do caso" (CLASSI_FIN) das notificações de SRAG do ano de 2026. Utilize a frequência absoluta (em centenas de notificações). Além disso, analisando o gráfico, responda: Qual é a classificação final do caso mais frequente?
+
+#### Item 4 - Faça um histograma para a idade, em anos, (NU_IDADE_N) das pessoas que tiveram notificações de SRAG do ano de 2026. Utilize a densidade de frequência e classes de amplitude 10 (com a primeira iniciando na idade 0, considerando intervalos fechados à esquerda e abertos à direita). Além disso, analisando o gráfico, responda: Qual é a faixa etária mais frequente?
+
+
+#### Item 5 - Faça um sumário com as principais medidas resumo (média, mediana, mínimo, máximo, primeiro e terceiro quartil) da variável idade (NU_IDADE_N). Além disso, calcule o desvio padrão e o coeficiente de variação para a variável idade (utilize 2 casas decimais para a resposta).
+
+#### Item 6 - Qual foi a evolução mais frequente (moda da variável EVOLUCAO) registrada entre as notificações de SRAG do ano de 2026?
+
+
+#### Item 7 - Faça uma tabela cruzada com as variáveis "Recebeu vacina contra Gripe na última campanha?" (VACINA) nas linhas e "Internado em UTI?" (UTI) nas colunas, utilizando frequências relativas pelo total da linha (utilize 2 casas decimais para a porcentagem). Exclua valores ausentes (NA's) e "Ignorado" de ambas as variáveis, VACINA e UTI. Responda: Do total de pessoas que receberam vacina contra gripe na última campanha, qual a porcentagem de pessoas que foram internadas em UTI? E considerando o total de pessoas que não receberam vacina contra gripe na última campanha, qual porcentagem foram internadas em UTI?
+
+
+#### Item 8 - Faça um box-plot comparativo das variáveis idade (NU_IDADE_N) e sexo (CS_SEXO) e comente a respeito da comparação da dispersão e da idade mediana dos dois grupos. Existem outliers?
+
+---
+
+## Observações:
+
+(i) Antes de resolver cada exercício, caso a(s) variável(is) a ser(em) usada(s) ainda não tenha(m) sido tratada(s) (vide dicionário), realize todas as etapas de manipulação. Considere, em todas as análises, as variáveis após essa manipulação; 
+
+(ii) Não pedir a impressão/visualização do dataframe em nenhum momento da solução enviada;
+
+(iii) Apresentar as tabelas, gráficos sem a categoria dos *NA's* e de "Ignorado";
+ 
+(iv) A exclusão dos *NA's* e da categoria "Ignorado" deve ser realizada em cada exercício (não no dataframe todo), fazendo a exclusão apenas dos dados faltantes e ignorados nas variáveis de interesse do respectivo exercício. Além disso, após a realização da exclusão (filtro), usar a função droplevels() para remover completamente os níveis dos fatores sem valores. 
+
+Exemplo: dados_filtro <- droplevels(dados_filtro)
+
+(v) A entrega da atividade deve ser realizada em arquivo RMarkdown (.Rmd) e o arquivo PDF, gerado a partir do RMarkdown.
+
+
+--- 
+
+## Solução:
+
+Para padronizar a resolução, siga os passos a seguir da importação dos dados e da construção de uma base contendo somente as variáveis que serão utilizadas na atividade.
+
+### Importação da base de dados 
+
+```{r}
+dataset <- read.csv("INFLUD26.csv", sep =";")
+
+# head(dataset)  # não deixar habilitado na versão entregue!
+dim(dataset)
+
+```
+
+
+### Filtrar a base de dados deixando apenas as variáveis necessárias para resolver os itens 
+
+Note que são muitas as variáveis, vamos nos concentrar nas variáveis que foram citadas nos itens. São elas: 'CS_SEXO', 'NU_IDADE_N', 'CS_RACA', 'VACINA', 'UTI', 'CLASSI_FIN', 'EVOLUCAO'.
+
+Agora vamos proceder com o filtro na base de dados. 
+
+```{r}
+vars_selecionadas <- c(
+'CS_SEXO', 
+'NU_IDADE_N', 
+'CS_RACA', 
+'VACINA', 
+'UTI', 
+'CLASSI_FIN', 
+'EVOLUCAO'
+)
+
+dados <- dataset[ ,vars_selecionadas]
+dim(dados) 
+```
+
+
+---
+
+### Solução dos itens   
+
+Preencha os campos a seguir com a resolução de cada item.
+
+
+
+#### Item 1 -  Solução:
+
+```{r}
+# Tratamento da variável CS_SEXO
+# Excluindo NAs, "Ignorado" (9) ou qualquer valor fora de M/F
+item1_df <- dados[!is.na(dados$CS_SEXO) & 
+                    dados$CS_SEXO %in% c("F", "M", 1, 2), ]
+
+# Recodificando para rótulos legíveis
+item1_df$CS_SEXO <- factor(item1_df$CS_SEXO, 
+                          levels = c("1", "2", "F", "M"),
+                          labels = c("Masculino", "Feminino", "Feminino", "Masculino"))
+
+item1_df <- droplevels(item1_df)
+
+# Tabela de frequência e percentual
+freq_sexo <- table(item1_df$CS_SEXO)
+prop_sexo <- prop.table(freq_sexo) * 100
+
+tabela_sexo <- cbind(Frequencia = freq_sexo, 
+                     Porcentagem = round(prop_sexo, 2))
+tabela_sexo
+
+```
+
+
+
+#### Item 2 -  Solução:
+
+
+```{r}
+
+# Filtrando ausentes e "Ignorado" (9)
+item2_df <- dados[!is.na(dados$CS_RACA) & dados$CS_RACA != 9, ]
+
+# Definindo os níveis conforme dicionário
+item2_df$CS_RACA <- factor(item2_df$CS_RACA,
+                          levels = c(1, 2, 3, 4, 5),
+                          labels = c("Branca", "Preta", "Amarela", "Parda", "Indígena"))
+
+item2_df <- droplevels(item2_df)
+
+freq_raca <- table(item2_df$CS_RACA)
+prop_raca <- prop.table(freq_raca)
+
+tabela_raca <- cbind(Frequencia = freq_raca, 
+                     Proporcao = round(prop_raca, 4))
+tabela_raca
+
+maior_cat <- names(which.max(prop_raca))
+maior_prop <- max(prop_raca)
+
+```
+
+
+
+
+
+#### Item 3 -  Solução:
+
+```{r}
+# Filtrando ausentes e sem classificação (se houver)
+item3_df <- dados[!is.na(dados$CLASSI_FIN) & dados$CLASSI_FIN %in% 1:5, ]
+
+item3_df$CLASSI_FIN <- factor(item3_df$CLASSI_FIN,
+                             levels = 1:5,
+                             labels = c("Influenza", "Outro Vírus", "Outro Agente", "Não Espec.", "COVID-19"))
+
+item3_df <- droplevels(item3_df)
+
+# Frequência absoluta em centenas
+freq_classi <- table(item3_df$CLASSI_FIN)
+freq_centenas <- freq_classi / 100
+
+# Gráfico de barras
+barplot(freq_centenas,
+        main = "Classificação Final dos Casos de SRAG (2026)",
+        ylab = "Frequência Absoluta (em centenas)",
+        col = "steelblue",
+        las = 2,
+        cex.names = 0.8)
+
+mais_frequente_classi <- names(which.max(freq_classi))
+
+
+```
+
+
+
+#### Item 4 -  Solução:
+
+```{r}
+# Filtrando NAs e idades negativas/inválidas
+item4_df <- dados[!is.na(dados$NU_IDADE_N) & dados$NU_IDADE_N >= 0, ]
+
+max_idade <- max(item4_df$NU_IDADE_N)
+quebras <- seq(0, max_idade + 10, by = 10)
+
+# Histograma com densidade e intervalos [a, b) (right = FALSE)
+hist_out <- hist(item4_df$NU_IDADE_N,
+                 breaks = quebras,
+                 right = FALSE,
+                 freq = FALSE,
+                 main = "Distribuição da Idade das Notificações de SRAG (2026)",
+                 xlab = "Idade (anos)",
+                 ylab = "Densidade de Frequência",
+                 col = "lightblue")
+
+# Identificando a faixa mais frequente
+idx_max <- which.max(hist_out$counts)
+faixa_max <- paste0("[", hist_out$breaks[idx_max], ", ", hist_out$breaks[idx_max + 1], ")")
+
+
+```
+
+
+
+
+
+#### Item 5 -  Solução:
+
+```{r}
+# 1. Converter explicitamente NU_IDADE_N para numérico e filtrar válidos
+idade_num <- as.numeric(as.character(dados$NU_IDADE_N))
+idade_valida <- idade_num[!is.na(idade_num) & idade_num >= 0]
+
+# 2. Cálculo das estatísticas descritivas
+min_id    <- min(idade_valida)
+q1_id     <- quantile(idade_valida, 0.25)
+mediana_id<- median(idade_valida)
+media_id  <- mean(idade_valida)
+q3_id     <- quantile(idade_valida, 0.75)
+max_id    <- max(idade_valida)
+dp_id     <- sd(idade_valida)
+cv_id     <- (dp_id / media_id) * 100
+
+# 3. Montando o data.frame com valores numéricos diretos
+medidas_resumo <- data.frame(
+  Minimo        = round(as.numeric(min_id), 2),
+  Q1            = round(as.numeric(q1_id), 2),
+  Mediana       = round(as.numeric(mediana_id), 2),
+  Media         = round(as.numeric(media_id), 2),
+  Q3            = round(as.numeric(q3_id), 2),
+  Maximo        = round(as.numeric(max_id), 2),
+  Desvio_Padrao = round(as.numeric(dp_id), 2),
+  CV_Percentual = round(as.numeric(cv_id), 2)
+)
+
+medidas_resumo
+
+```
+
+
+
+#### Item 6 - Solução:
+
+
+```{r}
+# Filtrando NAs e ignorados (9)
+item6_df <- dados[!is.na(dados$EVOLUCAO) & dados$EVOLUCAO != 9, ]
+
+item6_df$EVOLUCAO <- factor(item6_df$EVOLUCAO,
+                            levels = c(1, 2, 3),
+                            labels = c("Cura", "Óbito", "Óbito por outras causas"))
+
+item6_df <- droplevels(item6_df)
+
+freq_evolucao <- table(item6_df$EVOLUCAO)
+moda_evolucao <- names(which.max(freq_evolucao))
+
+freq_evolucao
+
+
+```
+
+
+
+
+
+#### Item 7 - Solução:
+
+```{r}
+
+# Filtrando NAs e ignorados (9) de VACINA e UTI
+item7_df <- dados[!is.na(dados$VACINA) & dados$VACINA %in% c(1, 2) &
+                  !is.na(dados$UTI) & dados$UTI %in% c(1, 2), ]
+
+item7_df$VACINA <- factor(item7_df$VACINA, levels = c(1, 2), labels = c("Vacinado", "Não Vacinado"))
+item7_df$UTI <- factor(item7_df$UTI, levels = c(1, 2), labels = c("UTI - Sim", "UTI - Não"))
+
+item7_df <- droplevels(item7_df)
+
+# Tabela cruzada com proporção por linha (margin = 1) em porcentagem
+tab_abs <- table(item7_df$VACINA, item7_df$UTI)
+tab_prop_linha <- prop.table(tab_abs, margin = 1) * 100
+
+round(tab_prop_linha, 2)
+
+pct_vacinado_uti <- tab_prop_linha["Vacinado", "UTI - Sim"]
+pct_nao_vacinado_uti <- tab_prop_linha["Não Vacinado", "UTI - Sim"]
+
+```
+
+
+
+
+
+
+
+#### Item 8 - Solução:
+
+```{r}
+# Filtrando dados válidos para Idade e Sexo
+item8_df <- dados[!is.na(dados$NU_IDADE_N) & dados$NU_IDADE_N >= 0 &
+                  !is.na(dados$CS_SEXO) & dados$CS_SEXO %in% c("1", "2", "F", "M"), ]
+
+item8_df$CS_SEXO <- factor(item8_df$CS_SEXO, 
+                          levels = c("1", "2", "F", "M"),
+                          labels = c("Masculino", "Feminino", "Feminino", "Masculino"))
+
+item8_df <- droplevels(item8_df)
+
+# Boxplot comparativo
+boxplot(NU_IDADE_N ~ CS_SEXO, 
+        data = item8_df,
+        main = "Boxplot Comparativo de Idade por Sexo",
+        xlab = "Sexo",
+        ylab = "Idade (anos)",
+        col = c("lightblue", "pink"))
+
+# Cálculo estatístico para suporte ao comentário
+mediana_masc <- median(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Masculino"])
+mediana_fem <- median(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Feminino"])
+
+iqr_masc <- IQR(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Masculino"])
+iqr_fem <- IQR(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Feminino"])
+
+# Verificação de Outliers via boxplot.stats
+out_masc <- length(boxplot.stats(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Masculino"])$out)
+out_fem <- length(boxplot.stats(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Feminino"])$out)
+
+
+```
+
+
+
