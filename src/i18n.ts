@@ -17,11 +17,19 @@ const resources = {
         menu_open: 'Abrir menu',
         menu_close: 'Fechar menu',
       },
+      report: {
+        title: 'Relatório do Projeto',
+        download: 'Baixar PDF',
+        close: 'Fechar',
+        generating: 'Gerando PDF...',
+        download_error: 'Erro ao baixar o relatório. Tente novamente.',
+      },
       hero: {
         badge: 'DADOS ATIVOS',
         title_pre: 'SRAG 2026',
         description: 'Análise descritiva de notificações de Síndrome Respiratória Aguda Grave (SRAG) do ano de 2026 — Ministério da Saúde, SIVEP-Gripe.',
         view_items: 'Ver Análises',
+        view_report: 'Relatório',
         scroll: 'Role para baixo',
         words: ['Estatística Descritiva', 'SRAG 2026', 'Vigilância Epidemiológica'],
         pipeline_status: 'ESTADO DO PIPELINE',
@@ -43,11 +51,6 @@ const resources = {
         pipeline_status: 'ESTADO DO PIPELINE',
         pipeline_alert: 'Dados processados a partir do SIVEP-Gripe. Qualidade verificada com 170.328 notificações válidas.',
         docs_ref_name: 'Referência Técnica',
-        docs_ref_summary: [
-          { heading: 'Visão Geral', items: ['Dashboard web interativo para análise descritiva de SRAG 2026', 'Dados do SIVEP-Gripe (Ministério da Saúde) com 170.328 notificações', 'Pipeline de processamento: CSV → Node.js → React'] },
-          { heading: 'Stack Tecnológica', items: ['React 19 + TypeScript + Vite 8', 'Framer Motion para animações', 'i18next para suporte multilíngue (PT/EN/ES)', 'Vitest para testes automatizados'] },
-          { heading: 'Análises Estatísticas', items: ['8 itens de estatística descritiva', 'Tabelas de frequência, histogramas, box-plots', 'Medidas-resumo e tabelas cruzadas', 'Visualizações interativas com Framer Motion'] }
-        ],
         docs_ml_name: 'Plano ML',
         docs_ml_summary: [
           { heading: 'Objetivo', items: ['Modelo preditivo para classificação de casos graves de SRAG', 'Previsão de evolução (óbito vs recuperação) baseada em variáveis clínicas', 'Identificação de fatores de risco para internação em UTI'] },
@@ -160,11 +163,19 @@ const resources = {
         menu_open: 'Open menu',
         menu_close: 'Close menu',
       },
+      report: {
+        title: 'Project Report',
+        download: 'Download PDF',
+        close: 'Close',
+        generating: 'Generating PDF...',
+        download_error: 'Error downloading report. Please try again.',
+      },
       hero: {
         badge: 'ACTIVE DATA',
         title_pre: 'SRAG 2026',
         description: 'Descriptive analysis of Severe Acute Respiratory Syndrome (SARS) notifications from 2026 — Ministry of Health, SIVEP-Flu.',
         view_items: 'View Analysis',
+        view_report: 'Report',
         scroll: 'Scroll down',
         words: ['Descriptive Statistics', 'SRAG 2026', 'Epidemiological Surveillance'],
         pipeline_status: 'PIPELINE STATUS',
@@ -186,11 +197,6 @@ const resources = {
         pipeline_status: 'PIPELINE STATUS',
         pipeline_alert: 'Data processed from SIVEP-Flu. Quality verified with 170,328 valid notifications.',
         docs_ref_name: 'Technical Reference',
-        docs_ref_summary: [
-          { heading: 'Overview', items: ['Interactive web dashboard for descriptive analysis of SRAG 2026', 'Data from SIVEP-Flu (Ministry of Health) with 170,328 notifications', 'Processing pipeline: CSV → Node.js → React'] },
-          { heading: 'Tech Stack', items: ['React 19 + TypeScript + Vite 8', 'Framer Motion for animations', 'i18next for multilingual support (PT/EN/ES)', 'Vitest for automated testing'] },
-          { heading: 'Statistical Analysis', items: ['8 descriptive statistics items', 'Frequency tables, histograms, box-plots', 'Summary measures and cross-tabulations', 'Interactive visualizations with Framer Motion'] }
-        ],
         docs_ml_name: 'ML Plan',
         docs_ml_summary: [
           { heading: 'Objective', items: ['Predictive model for classification of severe SRAG cases', 'Outcome prediction (death vs recovery) based on clinical variables', 'Risk factor identification for ICU admission'] },
@@ -300,11 +306,19 @@ const resources = {
         menu_open: 'Abrir menú',
         menu_close: 'Cerrar menú',
       },
+      report: {
+        title: 'Informe del Proyecto',
+        download: 'Descargar PDF',
+        close: 'Cerrar',
+        generating: 'Generando PDF...',
+        download_error: 'Error al descargar el informe. Inténtelo de nuevo.',
+      },
       hero: {
         badge: 'DATOS ACTIVOS',
         title_pre: 'SRAG 2026',
         description: 'Análisis descriptivo de notificaciones de Síndrome Respiratoria Aguda Grave (SRAG) del año 2026 — Ministerio de Salud, SIVEP-Gripe.',
         view_items: 'Ver Análisis',
+        view_report: 'Informe',
         scroll: 'Desplázate',
         words: ['Estadística Descriptiva', 'SRAG 2026', 'Vigilancia Epidemiológica'],
         pipeline_status: 'ESTADO DEL PIPELINE',
@@ -326,11 +340,6 @@ const resources = {
         pipeline_status: 'ESTADO DEL PIPELINE',
         pipeline_alert: 'Datos procesados a partir del SIVEP-Gripe. Calidad verificada con 170.328 notificaciones válidas.',
         docs_ref_name: 'Referencia Técnica',
-        docs_ref_summary: [
-          { heading: 'Visión General', items: ['Panel web interactivo para análisis descriptivo de SRAG 2026', 'Datos del SIVEP-Gripe (Ministerio de Salud) con 170.328 notificaciones', 'Pipeline de procesamiento: CSV → Node.js → React'] },
-          { heading: 'Stack Tecnológico', items: ['React 19 + TypeScript + Vite 8', 'Framer Motion para animaciones', 'i18next para soporte multilingüe (PT/EN/ES)', 'Vitest para pruebas automatizadas'] },
-          { heading: 'Análisis Estadístico', items: ['8 ítems de estadística descriptiva', 'Tablas de frecuencia, histogramas, box-plots', 'Medidas resumen y tablas cruzadas', 'Visualizaciones interactivas con Framer Motion'] }
-        ],
         docs_ml_name: 'Plan ML',
         docs_ml_summary: [
           { heading: 'Objetivo', items: ['Modelo predictivo para clasificación de casos graves de SRAG', 'Predicción de evolución (muerte vs recuperación) basada en variables clínicas', 'Identificación de factores de riesgo para ingreso en UCI'] },

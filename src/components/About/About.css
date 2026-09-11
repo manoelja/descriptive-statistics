@@ -354,13 +354,12 @@
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Sem transform no hover: o botão não se move, só muda cor/borda/sombra */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease, background 0.3s ease;
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
   white-space: nowrap;
-  transform-style: preserve-3d;
-  perspective: 1000px;
 }
 
 .doc-preview-btn::before {
@@ -393,15 +392,13 @@
   color: var(--accent-color);
   opacity: 1;
   flex-shrink: 0;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .doc-preview-btn:hover {
   border-color: var(--accent-color);
-  box-shadow: 0 10px 40px rgba(22, 163, 74, 0.25), 0 0 0 1px rgba(22, 163, 74, 0.1);
-  transform: translateY(-4px) scale(1.02);
-  color: #fff;
-  background: linear-gradient(145deg, var(--accent-color) 0%, var(--accent-hover) 100%);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(22, 163, 74, 0.1);
+  color: #86efac;
 }
 
 .doc-preview-btn:hover::before {
@@ -414,13 +411,7 @@
 }
 
 .doc-preview-btn:hover svg {
-  transform: translateX(4px) rotate(5deg);
-  color: #fff;
-}
-
-.doc-preview-btn:active {
-  transform: translateY(-2px) scale(0.98);
-  transition-duration: 0.1s;
+  color: #86efac;
 }
 
 @media (max-width: 768px) {

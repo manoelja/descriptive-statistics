@@ -1,6 +1,6 @@
-/* Doc Modal Stylesheet */
+/* Project Report Modal Stylesheet */
 
-.doc-modal-portal {
+.report-modal-portal {
   position: fixed;
   top: 0;
   left: 0;
@@ -15,7 +15,7 @@
   overscroll-behavior: contain;
 }
 
-.doc-modal-backdrop {
+.report-modal-backdrop {
   position: absolute;
   top: 0;
   left: 0;
@@ -24,11 +24,11 @@
   background: transparent;
 }
 
-.doc-modal-container {
+.report-modal-container {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 950px;
+  max-width: 900px;
   max-height: 90vh;
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -39,14 +39,14 @@
   overflow: hidden;
 }
 
-.light-theme .doc-modal-container {
+.light-theme .report-modal-container {
   background-color: transparent;
   border-color: rgba(0, 0, 0, 0.08);
   box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.15);
 }
 
 /* Header Controls */
-.doc-modal-header {
+.report-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -55,37 +55,32 @@
   background-color: transparent;
 }
 
-.light-theme .doc-modal-header {
+.light-theme .report-modal-header {
   background-color: transparent;
   border-bottom-color: rgba(0, 0, 0, 0.12);
 }
 
-.doc-modal-title-group {
+.header-left {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  min-width: 0;
+  gap: 1rem;
 }
 
-.doc-modal-title-group svg {
+.header-left svg {
   color: var(--accent-color);
-  opacity: 1;
-  flex-shrink: 0;
+  opacity: 0.8;
 }
 
-.doc-modal-title {
+.header-left h3 {
   font-size: clamp(0.9rem, 2vw, 1.25rem);
   font-weight: 800;
   letter-spacing: -0.5px;
   color: var(--text-primary);
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.doc-modal-tag {
-  font-size: 0.6rem;
+.report-lang-tag {
+  font-size: clamp(0.5rem, 1vw, 0.65rem);
   font-weight: 900;
   background-color: var(--accent-soft);
   color: var(--accent-color);
@@ -94,14 +89,13 @@
   letter-spacing: 0.5px;
 }
 
-.doc-modal-actions {
+.header-right {
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  flex-shrink: 0;
 }
 
-.doc-control-btn {
+.report-control-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -117,32 +111,32 @@
   transition: none !important;
 }
 
-.doc-control-btn svg {
+.report-control-btn svg {
   opacity: 0.8 !important;
 }
 
-.doc-control-btn:hover {
+.report-control-btn:hover {
   background-color: rgba(255, 255, 255, 0.15);
   border-color: var(--accent-color);
   color: var(--accent-color);
 }
 
-.doc-control-btn:hover svg {
+.report-control-btn:hover svg {
   opacity: 1 !important;
   color: var(--accent-color);
 }
 
-.light-theme .doc-control-btn {
+.light-theme .report-control-btn {
   background-color: rgba(255, 255, 255, 0.5);
   border-color: rgba(0, 0, 0, 0.08);
 }
 
-.light-theme .doc-control-btn:hover {
+.light-theme .report-control-btn:hover {
   background-color: rgba(255, 255, 255, 0.7);
   border-color: var(--accent-color);
 }
 
-.doc-download-btn {
+.download-btn {
   background-color: var(--accent-color);
   color: #030303;
   border: none;
@@ -151,36 +145,36 @@
   appearance: none;
 }
 
-.doc-download-btn svg {
+.download-btn svg {
   color: #030303 !important;
 }
 
-.doc-download-btn:hover {
-  background-color: var(--accent-hover);
+.download-btn:hover {
+  background-color: #00e1eb;
   color: #030303;
   box-shadow: none;
 }
 
-.doc-download-btn:hover svg {
+.download-btn:hover svg {
   color: #030303 !important;
 }
 
-.doc-download-btn:active,
-.doc-download-btn:focus,
-.doc-download-btn:focus-visible {
+.download-btn:active,
+.download-btn:focus,
+.download-btn:focus-visible {
   transform: none !important;
   box-shadow: none !important;
   outline: none !important;
   opacity: 1 !important;
 }
 
-.doc-close-btn {
+.close-btn {
   padding: 0.6rem;
   border-radius: 50%;
 }
 
 /* Modal Body */
-.doc-modal-body {
+.report-modal-body {
   flex-grow: 1;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -188,17 +182,17 @@
   background-color: transparent;
 }
 
-.light-theme .doc-modal-body {
+.light-theme .report-modal-body {
   background-color: transparent;
 }
 
 /* Hide entire modal during PDF generation */
-.doc-modal-portal.generating {
+.report-modal-portal.generating {
   visibility: hidden;
 }
 
 /* Full-screen loading overlay outside the modal */
-.doc-fullscreen-loading {
+.report-fullscreen-loading {
   position: fixed;
   inset: 0;
   z-index: 10000;
@@ -208,51 +202,46 @@
   background: var(--bg-color, #050505);
 }
 
-.light-theme .doc-fullscreen-loading {
+.light-theme .report-fullscreen-loading {
   background: #ffffff;
 }
 
-.doc-loading-spinner {
+.report-loading-spinner {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.2rem;
 }
 
-.doc-spinner-ring {
+.report-spinner-ring {
   width: 48px;
   height: 48px;
   border: 3px solid rgba(255, 255, 255, 0.15);
   border-top-color: var(--accent-color);
   border-radius: 50%;
-  animation: doc-spin 0.8s linear infinite;
+  animation: report-spin 0.8s linear infinite;
 }
 
-.light-theme .doc-spinner-ring {
+.light-theme .report-spinner-ring {
   border-color: rgba(0, 0, 0, 0.1);
   border-top-color: var(--accent-color);
 }
 
-.doc-loading-text {
+.report-loading-text {
   font-size: clamp(0.85rem, 1.5vw, 1rem);
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.3px;
 }
 
-@keyframes doc-spin {
+@keyframes report-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-.doc-control-btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-/* Paper preview */
-.doc-paper {
+/* Report Paper */
+.report-paper {
   background-color: #0a0a0f;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
@@ -264,161 +253,308 @@
   backface-visibility: hidden;
 }
 
-.light-theme .doc-paper {
+.light-theme .report-paper {
   background-color: #ffffff;
   border-color: rgba(0, 0, 0, 0.05);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
 }
 
-.doc-paper-header {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 1.4rem;
-  padding-bottom: 1.1rem;
+/* Report Header */
+.report-paper-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
   border-bottom: 2px solid var(--accent-color);
 }
 
-.doc-paper-title {
-  font-size: clamp(1rem, 2.5vw, 1.4rem);
+.report-paper-title {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
   font-weight: 900;
-  letter-spacing: -0.5px;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+}
+
+.report-paper-subtitle {
+  font-size: clamp(0.7rem, 1.5vw, 1rem);
+  font-weight: 700;
+  color: var(--accent-color);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.report-paper-description {
+  font-size: clamp(0.75rem, 1.3vw, 0.95rem);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  text-align: justify;
+}
+
+/* Report Sections */
+.report-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.report-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.report-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.5rem;
+}
+
+.light-theme .report-section-header {
+  border-bottom-color: rgba(0, 0, 0, 0.15);
+}
+
+.report-section-header svg {
+  color: var(--accent-color);
+  opacity: 0.8 !important;
+}
+
+.report-section-title {
+  font-size: clamp(0.8rem, 1.5vw, 1.05rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   color: var(--text-primary);
   margin: 0;
 }
 
-.doc-paper-subtitle {
-  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
-.doc-paper-description {
-  margin: 0 0 1.6rem;
-  font-size: clamp(0.78rem, 1.6vw, 0.9rem);
-  color: var(--text-secondary);
-  line-height: 1.7;
-  text-align: justify;
-}
-
-.doc-paper-content {
+.report-section-list {
+  list-style-type: none;
   display: flex;
   flex-direction: column;
+  gap: 0.4rem;
 }
 
-.doc-summary-section {
-  margin-bottom: 1.4rem;
-}
-
-.doc-summary-section:last-child {
-  margin-bottom: 0;
-}
-
-.doc-summary-heading {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: clamp(0.62rem, 1.3vw, 0.72rem);
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--accent-color);
-  margin: 0 0 0.5rem;
-}
-
-.doc-summary-heading::before {
-  content: '';
-  width: 9px;
-  height: 9px;
-  flex-shrink: 0;
-  background: var(--accent-color);
-  border-radius: 3px;
-  box-shadow: 0 0 8px rgba(22, 163, 74, 0.4);
-}
-
-.doc-summary-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-
-.doc-summary-list li {
+.report-section-list li {
+  font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+  color: var(--text-secondary);
+  line-height: 1.5;
   position: relative;
-  padding-left: 1.1rem;
-  font-size: clamp(0.78rem, 1.6vw, 0.9rem);
-  color: var(--text-secondary);
-  line-height: 1.65;
+  padding-left: 1rem;
 }
 
-.doc-summary-list li::before {
-  content: '▸';
+.report-section-list li::before {
+  content: "▸";
   position: absolute;
   left: 0;
-  top: 0;
   color: var(--accent-color);
-  font-weight: 800;
+  font-weight: bold;
 }
 
 /* Responsiveness */
 @media (max-width: 768px) {
-  .doc-modal-portal {
+  .report-modal-portal {
     padding: 4rem 0.75rem 0.75rem;
   }
 
-  .doc-modal-container {
+  .report-modal-container {
     max-height: 95vh;
     border-radius: 16px;
   }
 
-  .doc-modal-header {
+  .report-modal-header {
     padding: 0.8rem 1rem;
   }
 
-  .doc-control-btn span {
+  .report-control-btn span {
     display: none;
   }
 
-  .doc-control-btn {
+  .report-control-btn {
     padding: 0.5rem;
     border-radius: 50%;
   }
 
-  .doc-download-btn {
-    border-radius: 10px;
-  }
-
-  .doc-modal-body {
+  .report-modal-body {
     padding: 1rem;
   }
 
-  .doc-paper {
+  .report-paper {
     padding: 1.25rem;
     border-radius: 12px;
+  }
+
+  .report-paper-header {
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .report-paper-title {
+    font-size: 1.3rem;
+  }
+
+  .report-paper-subtitle {
+    font-size: 0.7rem;
+  }
+
+  .report-paper-description {
+    font-size: 0.7rem;
+  }
+
+  .report-section-title {
+    font-size: 0.75rem;
+  }
+
+  .report-section-list li {
+    font-size: 0.65rem;
+  }
+
+  .report-sections {
+    gap: 1.25rem;
   }
 }
 
 @media (max-width: 576px) {
-  .doc-modal-portal {
+  .report-modal-portal {
     padding: 3.5rem 0.5rem 0.5rem;
   }
 
-  .doc-modal-container {
+  .report-modal-container {
     border-radius: 12px;
   }
 
-  .doc-modal-header {
+  .report-modal-header {
     padding: 0.6rem 0.75rem;
   }
 
-  .doc-modal-body {
+  .report-modal-body {
     padding: 0.75rem;
   }
 
-  .doc-paper {
+  .report-paper {
     padding: 1rem;
     border-radius: 10px;
+  }
+
+  .report-paper-title {
+    font-size: 1.1rem;
+    letter-spacing: -1px;
+  }
+
+  .report-paper-subtitle {
+    font-size: 0.6rem;
+  }
+
+  .report-paper-description {
+    font-size: 0.6rem;
+    line-height: 1.5;
+  }
+
+  .report-section-title {
+    font-size: 0.65rem;
+  }
+
+  .report-section-list li {
+    font-size: 0.55rem;
+  }
+}
+
+/* Print CSS */
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .report-modal-portal,
+  .report-modal-portal * {
+    visibility: visible;
+  }
+
+  .report-modal-portal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    z-index: auto;
+  }
+
+  .report-modal-backdrop {
+    display: none;
+  }
+
+  .report-modal-container {
+    position: static;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    background: white;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    overflow: visible;
+  }
+
+  .report-modal-header {
+    display: none;
+  }
+
+  .report-modal-body {
+    overflow: visible;
+    padding: 0;
+    background: white;
+  }
+
+  .report-paper {
+    background: white;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    color: black;
+    max-width: 100%;
+  }
+
+  .report-paper-title {
+    color: black;
+    font-size: 24pt;
+  }
+
+  .report-paper-subtitle {
+    color: #333;
+    font-size: 12pt;
+  }
+
+  .report-paper-description {
+    color: #444;
+  }
+
+  .report-section-header {
+    border-bottom-color: #ccc;
+  }
+
+  .report-section-title {
+    color: black;
+  }
+
+  .report-section-header svg {
+    color: #333;
+  }
+
+  .report-section-list li {
+    color: #333;
+  }
+
+  .report-section-list li::before {
+    color: #333;
   }
 }

@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import type { DocInfo } from './components/About/DocumentPreviewModal';
+import DocumentPreviewModal from './components/About/DocumentPreviewModal';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
 import About from './components/About/About';
@@ -11,6 +13,8 @@ import CyberBackground from './components/CyberBackground/CyberBackground';
 import './styles/global.css';
 
 function App() {
+  const [previewDoc, setPreviewDoc] = useState<DocInfo | null>(null);
+
   useEffect(() => {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
@@ -23,16 +27,17 @@ function App() {
   return (
     <div className="App">
       <CyberBackground />
-      <Navbar />
-      <main>
+      <Navbar isDocOpen={previewDoc !== null} />
+      <main className={previewDoc ? 'doc-open' : undefined}>
         <Hero />
-        <About />
+        <About setPreviewDoc={setPreviewDoc} />
         <Skills />
         <Items />
         <Dashboard />
         <FormulasLab />
         <Contact />
       </main>
+      <DocumentPreviewModal doc={previewDoc} onClose={() => setPreviewDoc(null)} />
     </div>
   );
 }

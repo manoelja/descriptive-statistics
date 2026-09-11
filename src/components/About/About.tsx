@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Database, FileText, BarChart3, Shield, ChevronDown, Activity, AlertCircle } from 'lucide-react';
-import DocumentPreviewModal, { type DocInfo } from './DocumentPreviewModal';
+import type { DocInfo } from './DocumentPreviewModal';
+import { reportData } from '../../data/reportData';
 import './About.css';
 
-const About = () => {
-  const { t } = useTranslation();
+interface AboutProps {
+  setPreviewDoc: (doc: DocInfo | null) => void;
+}
+
+const About = ({ setPreviewDoc }: AboutProps) => {
+  const { t, i18n } = useTranslation();
   const [isDataExpanded, setIsDataExpanded] = useState(false);
   const [isMissionExpanded, setIsMissionExpanded] = useState(false);
-  const [previewDoc, setPreviewDoc] = useState<DocInfo | null>(null);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -24,11 +28,19 @@ const About = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
   };
 
+  const lang = i18n.language.split('-')[0] as 'pt' | 'en' | 'es';
+  const report = reportData[lang] || reportData.pt;
+
   const technicalDocs: DocInfo[] = [
     {
       name: t('about.docs_ref_name'),
       slug: 'Referencia_Tecnica',
-      summary: t('about.docs_ref_summary', { returnObjects: true }) as DocInfo['summary']
+      subtitle: report.subtitle,
+      description: report.description,
+      summary: report.sections.map((section) => ({
+        heading: section.title,
+        items: section.items
+      }))
     },
     {
       name: t('about.docs_ml_name'),
@@ -237,8 +249,6 @@ const About = () => {
           </motion.div>
         </motion.div>
       </div>
-
-      <DocumentPreviewModal doc={previewDoc} onClose={() => setPreviewDoc(null)} />
     </section>
   );
 };

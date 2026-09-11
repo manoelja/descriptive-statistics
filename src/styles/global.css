@@ -246,6 +246,17 @@ body {
 
 main.container { min-height: 100vh; }
 
+/* Com o modal de documento aberto (Referência Técnica / Plano ML), o
+   conteúdo da página some e fica visível apenas a animação de fundo */
+main {
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+main.doc-open {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;

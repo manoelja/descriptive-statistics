@@ -109,6 +109,19 @@
   box-shadow: 0 4px 20px rgba(22, 163, 74, 0.3);
 }
 
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
 /* System status */
 .hero-visual {
   flex: 0 0 320px;

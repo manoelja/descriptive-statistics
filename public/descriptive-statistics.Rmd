@@ -233,26 +233,56 @@ Preencha os campos a seguir com a resolução de cada item.
 
 ```{r}
 # Tratamento da variável CS_SEXO
-# Excluindo NAs, "Ignorado" (9) ou qualquer valor fora de M/F
-item1_df <- dados[!is.na(dados$CS_SEXO) & 
-                    dados$CS_SEXO %in% c("F", "M", 1, 2), ]
+item1_df <- dados[
+  !is.na(dados$CS_SEXO) &
+    dados$CS_SEXO %in% c("F", "M", 1, 2),
+]
 
-# Recodificando para rótulos legíveis
-item1_df$CS_SEXO <- factor(item1_df$CS_SEXO, 
-                          levels = c("1", "2", "F", "M"),
-                          labels = c("Masculino", "Feminino", "Feminino", "Masculino"))
+# Recodificação da variável CS_SEXO
+item1_df$CS_SEXO <- factor(
+  item1_df$CS_SEXO,
+  levels = c("1", "2", "F", "M"),
+  labels = c("Masculino", "Feminino", "Feminino", "Masculino")
+)
 
-item1_df <- droplevels(item1_df)
+# Remover níveis não utilizados
+item1_df$CS_SEXO <- droplevels(item1_df$CS_SEXO)
 
-# Tabela de frequência e percentual
+# Frequência absoluta
 freq_sexo <- table(item1_df$CS_SEXO)
+
+# Frequência relativa (%)
 prop_sexo <- prop.table(freq_sexo) * 100
 
-tabela_sexo <- cbind(Frequencia = freq_sexo, 
-                     Porcentagem = round(prop_sexo, 2))
-tabela_sexo
+# Tabela final
+tabela_sexo <- data.frame(
+  Sexo = names(freq_sexo),
+  Frequência = as.vector(freq_sexo),
+  Porcentagem = round(as.vector(prop_sexo), 2)
+)
+
+# Adicionar total
+tabela_sexo <- rbind(
+  tabela_sexo,
+  data.frame(
+    Sexo = "Total",
+    Frequência = sum(tabela_sexo$Frequência),
+    Porcentagem = sum(tabela_sexo$Porcentagem)
+  )
+)
+# Tabela 
+knitr::kable(
+  tabela_sexo,
+  col.names = c("Sexo", "Frequência", "Porcentagem (%)"),
+  align = c("l", "c", "c"),
+  caption = "Distribuição dos indivíduos segundo o sexo",
+  booktabs = TRUE
+)
 
 ```
+#### Resposta
+
+##### O percentual de casos notificados de SRAG em 2026 foi de 52,12\% corresponderam ao sexo masculino, enquanto 47,88\% corresponderam ao sexo feminino.
 
 
 
@@ -260,74 +290,136 @@ tabela_sexo
 
 
 ```{r}
+# Tratamento da variável CS_RACA
+item2_df <- dados[
+  !is.na(dados$CS_RACA) & dados$CS_RACA != 9,
+]
 
-# Filtrando ausentes e "Ignorado" (9)
-item2_df <- dados[!is.na(dados$CS_RACA) & dados$CS_RACA != 9, ]
+# Recodificando a variável CS_RACA
+item2_df$CS_RACA <- factor(
+  item2_df$CS_RACA,
+  levels = c(1, 2, 3, 4, 5),
+  labels = c(
+    "Branca",
+    "Preta",
+    "Amarela",
+    "Parda",
+    "Indígena"
+  )
+)
 
-# Definindo os níveis conforme dicionário
-item2_df$CS_RACA <- factor(item2_df$CS_RACA,
-                          levels = c(1, 2, 3, 4, 5),
-                          labels = c("Branca", "Preta", "Amarela", "Parda", "Indígena"))
-
-item2_df <- droplevels(item2_df)
-
+# Frequência absoluta
 freq_raca <- table(item2_df$CS_RACA)
-prop_raca <- prop.table(freq_raca)
 
-tabela_raca <- cbind(Frequencia = freq_raca, 
-                     Proporcao = round(prop_raca, 4))
-tabela_raca
+# Percentual
+perc_raca <- prop.table(freq_raca) * 100
 
-maior_cat <- names(which.max(prop_raca))
-maior_prop <- max(prop_raca)
+# Tabela de frequência
+tabela_raca <- data.frame(
+  `Cor/Raça` = names(freq_raca),
+  Frequência = as.vector(freq_raca),
+  Percentual = round(as.vector(perc_raca), 4)
+)
+
+# Adicionando o total
+tabela_raca <- rbind(
+  tabela_raca,
+  data.frame(
+    `Cor/Raça` = "Total",
+    Frequência = sum(freq_raca),
+    Percentual = 100.0000
+  )
+)
+# Tabela
+knitr::kable(
+  tabela_raca,
+  col.names = c("Cor/Raça", "Frequência", "Percentual (%)"),
+  align = c("l", "c", "c"),
+  caption = "Distribuição dos indivíduos segundo cor ou raça",
+  booktabs = TRUE
+)
 
 ```
+\newpage
+#### Resposta
 
-
+#### A raça/cor que apresentou o maior percentual de casos notificados de SRAG em 2026 foi a parda, com 51,4944\% dos casos.
 
 
 
 #### Item 3 -  Solução:
 
-```{r}
-# Filtrando ausentes e sem classificação (se houver)
-item3_df <- dados[!is.na(dados$CLASSI_FIN) & dados$CLASSI_FIN %in% 1:5, ]
+```{r, fig.align='center'}
+# Tratamento da variável CLASSI_FIN
+item3_df <- dados[
+  !is.na(dados$CLASSI_FIN) & dados$CLASSI_FIN %in% 1:5,
+]
 
-item3_df$CLASSI_FIN <- factor(item3_df$CLASSI_FIN,
-                             levels = 1:5,
-                             labels = c("Influenza", "Outro Vírus", "Outro Agente", "Não Espec.", "COVID-19"))
+# Recodificando a variável
+item3_df$CLASSI_FIN <- factor(
+  item3_df$CLASSI_FIN,
+  levels = 1:5,
+  labels = c(
+    "Influenza",
+    "Outro Vírus",
+    "Outro Agente",
+    "Não Espec.",
+    "COVID-19"
+  )
+)
 
 item3_df <- droplevels(item3_df)
 
-# Frequência absoluta em centenas
+# Frequência absoluta
 freq_classi <- table(item3_df$CLASSI_FIN)
+
+# Ordenação da Frequência
+freq_classi <- sort(freq_classi, decreasing = TRUE)
+# Frequência em centenas
 freq_centenas <- freq_classi / 100
 
 # Gráfico de barras
-barplot(freq_centenas,
-        main = "Classificação Final dos Casos de SRAG (2026)",
-        ylab = "Frequência Absoluta (em centenas)",
-        col = "steelblue",
-        las = 2,
-        cex.names = 0.8)
+pos <- barplot(
+  freq_centenas,
+  main = "Classificação Final dos Casos de SRAG (2026)",
+  ylab = "Frequência Absoluta (em centenas)",
+  col = "steelblue",
+  las = 2,
+  cex.names = 0.8,
+  ylim = c(0, 800)
+)
 
-mais_frequente_classi <- names(which.max(freq_classi))
+# Adicionando os valores em cima das barras
+text(
+  x = pos,
+  y = freq_centenas,
+  labels = round(freq_centenas, 1),
+  pos = 3,
+  cex = 0.8
+)
+
+
 
 
 ```
+#### Resposta
 
+#### Em 2026, os casos de SRAG classificados como não especificados apresentaram o maior número de notificações.
 
 
 #### Item 4 -  Solução:
 
-```{r}
+```{r, fig.align='center'}
 # Filtrando NAs e idades negativas/inválidas
 item4_df <- dados[!is.na(dados$NU_IDADE_N) & dados$NU_IDADE_N >= 0, ]
 
 max_idade <- max(item4_df$NU_IDADE_N)
 quebras <- seq(0, max_idade + 10, by = 10)
 
-# Histograma com densidade e intervalos [a, b) (right = FALSE)
+# 1. Calcula o histograma sem plotar para pegar a densidade máxima
+hist_calc <- hist(item4_df$NU_IDADE_N, breaks = quebras, right = FALSE, plot = FALSE)
+
+# 2. Plota o histograma definindo ylim para dar 25% de folga no topo
 hist_out <- hist(item4_df$NU_IDADE_N,
                  breaks = quebras,
                  right = FALSE,
@@ -335,22 +427,30 @@ hist_out <- hist(item4_df$NU_IDADE_N,
                  main = "Distribuição da Idade das Notificações de SRAG (2026)",
                  xlab = "Idade (anos)",
                  ylab = "Densidade de Frequência",
-                 col = "lightblue")
+                 col = "lightblue",
+                 ylim = c(0, max(hist_calc$density) * 1.25) 
+)
 
-# Identificando a faixa mais frequente
-idx_max <- which.max(hist_out$counts)
-faixa_max <- paste0("[", hist_out$breaks[idx_max], ", ", hist_out$breaks[idx_max + 1], ")")
-
+# 3. Adiciona os rótulos acima da barra
+text(
+  x = hist_out$mids,
+  y = hist_out$density,
+  labels = hist_out$counts,
+  pos = 3,     # Posição acima da barra
+  cex = 0.7    # Tamanho da fonte
+)
 
 ```
+#### Resposta
 
+#### A faixa etária que apresentou o maior número de notificações de SRAG em 2026 foi a de 0 a 10 anos de idade, correspondente às crianças. Esse resultado indica uma maior concentração de notificações nessa faixa etária, possivelmente relacionada à maior vulnerabilidade das crianças às infecções respiratórias.
 
 
 
 
 #### Item 5 -  Solução:
 
-```{r}
+```{r, fig.align='center'}
 # 1. Converter explicitamente NU_IDADE_N para numérico e filtrar válidos
 idade_num <- as.numeric(as.character(dados$NU_IDADE_N))
 idade_valida <- idade_num[!is.na(idade_num) & idade_num >= 0]
@@ -377,16 +477,18 @@ medidas_resumo <- data.frame(
   CV_Percentual = round(as.numeric(cv_id), 2)
 )
 
-medidas_resumo
+# Tabela
+knitr::kable(
+  medidas_resumo
+)
+
 
 ```
-
-
 
 #### Item 6 - Solução:
 
 
-```{r}
+```{r, fig.align='center'}
 # Filtrando NAs e ignorados (9)
 item6_df <- dados[!is.na(dados$EVOLUCAO) & dados$EVOLUCAO != 9, ]
 
@@ -399,48 +501,79 @@ item6_df <- droplevels(item6_df)
 freq_evolucao <- table(item6_df$EVOLUCAO)
 moda_evolucao <- names(which.max(freq_evolucao))
 
-freq_evolucao
-
+# Tabela
+knitr::kable(
+  freq_evolucao
+)
 
 ```
 
+#### Resposta
 
-
-
+#### A evolução mais frequente observada entre as notificações de SRAG em 2026 foi a **cura**, com **121.888 notificações**.
 
 #### Item 7 - Solução:
 
 ```{r}
+# Filtrando NAs e ignorados de VACINA e UTI
+item7_df <- dados[
+  !is.na(dados$VACINA) & dados$VACINA %in% c(1, 2) &
+  !is.na(dados$UTI) & dados$UTI %in% c(1, 2),
+]
 
-# Filtrando NAs e ignorados (9) de VACINA e UTI
-item7_df <- dados[!is.na(dados$VACINA) & dados$VACINA %in% c(1, 2) &
-                  !is.na(dados$UTI) & dados$UTI %in% c(1, 2), ]
+# Recodificando para ordenar "Não" primeiro e depois "Sim"
+item7_df$VACINA <- factor(
+  item7_df$VACINA,
+  levels = c(2, 1),
+  labels = c("Não", "Sim")
+)
 
-item7_df$VACINA <- factor(item7_df$VACINA, levels = c(1, 2), labels = c("Vacinado", "Não Vacinado"))
-item7_df$UTI <- factor(item7_df$UTI, levels = c(1, 2), labels = c("UTI - Sim", "UTI - Não"))
+item7_df$UTI <- factor(
+  item7_df$UTI,
+  levels = c(2, 1),
+  labels = c("Não", "Sim")
+)
 
-item7_df <- droplevels(item7_df)
-
-# Tabela cruzada com proporção por linha (margin = 1) em porcentagem
+# Tabela cruzada de frequências absolutas
 tab_abs <- table(item7_df$VACINA, item7_df$UTI)
+
+# Proporção por linha em porcentagem
 tab_prop_linha <- prop.table(tab_abs, margin = 1) * 100
 
-round(tab_prop_linha, 2)
+# Construindo a tabela final no formato longo
+tabela_item7 <- data.frame(
+  `Status Vacinal` = c("Não", "Não", "Sim", "Sim"),
+  `Internado em UTI` = c("Não", "Sim", "Não", "Sim"),
+  `Quantitativo` = c(
+    tab_abs["Não", "Não"],
+    tab_abs["Não", "Sim"],
+    tab_abs["Sim", "Não"],
+    tab_abs["Sim", "Sim"]
+  ),
+  `Percentual (%)` = round(c(
+    tab_prop_linha["Não", "Não"],
+    tab_prop_linha["Não", "Sim"],
+    tab_prop_linha["Sim", "Não"],
+    tab_prop_linha["Sim", "Sim"]
+  ), 2),
+  check.names = FALSE,
+  row.names = NULL
+)
 
-pct_vacinado_uti <- tab_prop_linha["Vacinado", "UTI - Sim"]
-pct_nao_vacinado_uti <- tab_prop_linha["Não Vacinado", "UTI - Sim"]
-
+# Renderizando a tabela no R Markdown com knitr
+knitr::kable(
+  tabela_item7,
+  caption = "Tabela 4: Frequência relativa por linha: Vacina contra Gripe vs. Internação em UTI",
+  align = c("l", "c", "c", "c")
+)
 ```
+#### Resposta
 
-
-
-
-
-
+#### Do total de pessoas que receberam vacina contra gripe na última campanha, **24,06\%** foram internadas em UTI. Já entre as pessoas que não receberam a vacina, **29,98\%** foram internadas em UTI.
 
 #### Item 8 - Solução:
 
-```{r}
+```{r, fig.align='center'}
 # Filtrando dados válidos para Idade e Sexo
 item8_df <- dados[!is.na(dados$NU_IDADE_N) & dados$NU_IDADE_N >= 0 &
                   !is.na(dados$CS_SEXO) & dados$CS_SEXO %in% c("1", "2", "F", "M"), ]
@@ -451,27 +584,32 @@ item8_df$CS_SEXO <- factor(item8_df$CS_SEXO,
 
 item8_df <- droplevels(item8_df)
 
-# Boxplot comparativo
+# Definir limite máximo de idade para o eixo
+max_y <- max(item8_df$NU_IDADE_N)
+
+# Boxplot comparativo sem o eixo Y padrão (yaxt = "n")
 boxplot(NU_IDADE_N ~ CS_SEXO, 
         data = item8_df,
         main = "Boxplot Comparativo de Idade por Sexo",
         xlab = "Sexo",
         ylab = "Idade (anos)",
-        col = c("lightblue", "pink"))
+        col = c("lightblue", "pink"),
+        yaxt = "n")
+
+# Adicionar eixo Y personalizado de 10 em 10 anos
+axis(side = 2, at = seq(0, ceiling(max_y / 10) * 10, by = 10), las = 1)
 
 # Cálculo estatístico para suporte ao comentário
 mediana_masc <- median(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Masculino"])
-mediana_fem <- median(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Feminino"])
+mediana_fem  <- median(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Feminino"])
 
 iqr_masc <- IQR(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Masculino"])
-iqr_fem <- IQR(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Feminino"])
+iqr_fem  <- IQR(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Feminino"])
 
-# Verificação de Outliers via boxplot.stats
 out_masc <- length(boxplot.stats(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Masculino"])$out)
-out_fem <- length(boxplot.stats(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Feminino"])$out)
-
+out_fem  <- length(boxplot.stats(item8_df$NU_IDADE_N[item8_df$CS_SEXO == "Feminino"])$out)
 
 ```
+#### Resposta
 
-
-
+#### O boxplot mostra que, em ambos os sexos, há uma grande concentração de indivíduos com idade inferior a 10 anos. Apesar dessa concentração de crianças, também são observados indivíduos de faixas etárias mais elevadas, o que contribui para a dispersão dos dados. A idade mediana é de aproximadamente 30 anos para o sexo feminino e 25 anos para o sexo masculino. Observa-se ainda maior presença de indivíduos com mais de 60 anos entre as mulheres. Também é perceptível a presença de um caso isolado no sexo masculino, com idade superior a 110 anos, caracterizado como um possível valor discrepante (outlier).
