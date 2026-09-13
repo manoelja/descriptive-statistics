@@ -45,6 +45,32 @@ const Navbar = ({ isDocOpen = false }: NavbarProps) => {
     root.classList.remove('no-theme-transition');
   }, [isLight]);
 
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      const scrollY = window.scrollY;
+
+      const preventScroll = (e: Event) => {
+        if ((e.target as HTMLElement).closest('.mobile-drawer')) return;
+        e.preventDefault();
+      };
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+      document.addEventListener('wheel', preventScroll, { passive: false });
+
+      return () => {
+        window.scrollTo(0, scrollY);
+        document.removeEventListener('touchmove', preventScroll);
+        document.removeEventListener('wheel', preventScroll);
+      };
+    }
+  }, [isMobileMenuOpen]);
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const [isLangOpen, setIsLangOpen] = useState(false);
   const languages = [
     { code: 'pt', label: 'PT', flag: '🇧🇷' },
@@ -75,7 +101,7 @@ const Navbar = ({ isDocOpen = false }: NavbarProps) => {
         <ul className="nav-links desktop-only">
           {navLinks.map((link) => (
             <li key={link.id}>
-              <a href={`#${link.id}`} className={activeSection === link.id ? 'active' : ''}>
+              <a href={`#${link.id}`} className={activeSection === link.id ? 'active' : ''} onClick={(e) => { e.preventDefault(); scrollToSection(link.id); }}>
                 {link.label}
               </a>
             </li>
@@ -125,7 +151,7 @@ const Navbar = ({ isDocOpen = false }: NavbarProps) => {
               <ul className="mobile-nav-links">
                 {navLinks.map((link, i) => (
                   <motion.li key={link.id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}>
-                    <a href={`#${link.id}`} className={activeSection === link.id ? 'active' : ''} onClick={() => setIsMobileMenuOpen(false)}>{link.label}</a>
+                    <a href={`#${link.id}`} className={activeSection === link.id ? 'active' : ''} onClick={(e) => { e.preventDefault(); setIsMobileMenuOpen(false); setTimeout(() => scrollToSection(link.id), 100); }}>{link.label}</a>
                   </motion.li>
                 ))}
               </ul>
