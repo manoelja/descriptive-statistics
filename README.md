@@ -36,7 +36,7 @@ Com dados de **170.328 registros** de notificações hospitalizadas e óbitos po
 ## Como funciona o pipeline
 
 ```
-INFLUD26-20-07-2026.csv (fonte bruta, SIVEP-Gripe)
+INFLUD26.csv (fonte bruta, SIVEP-Gripe)
         │
         ▼
 scripts/export-data.mjs   ← Node lê o CSV, calcula todas as respostas
@@ -131,7 +131,7 @@ Depois é só abrir `http://localhost:5173` no navegador.
 
 ```
 descriptive-statistics/
-├── INFLUD26-20-07-2026.csv       # dados brutos (SIVEP-Gripe)
+├── INFLUD26.csv       # dados brutos (SIVEP-Gripe)
 ├── package.json
 ├── vite.config.ts / vitest.config.ts
 ├── scripts/

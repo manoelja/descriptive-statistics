@@ -1,6 +1,6 @@
 // Gerado por scripts/export-data.mjs — NÃO edite manualmente.
 // Para regenerar: npm run data:export
-// Fonte: INFLUD26-20-07-2026.csv (SIVEP-Gripe — SRAG 2026)
+// Fonte: INFLUD26.csv (SIVEP-Gripe — SRAG 2026)
 
 export interface FrequencyRow {
   category: string;

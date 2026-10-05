@@ -1,7 +1,7 @@
 /**
  * scripts/export-data.mjs
  *
- * Lê INFLUD26-20-07-2026.csv (SRAG 2026 — SIVEP-Gripe),
+ * Lê INFLUD26.csv (SRAG 2026 — SIVEP-Gripe),
  * calcula todas as respostas da atividade e gera src/data/srag.ts.
  *
  * Uso: npm run data:export
@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const CSV_PATH = join(ROOT, 'INFLUD26-20-07-2026.csv');
+const CSV_PATH = join(ROOT, 'INFLUD26.csv');
 const OUT_PATH = join(ROOT, 'src', 'data', 'srag.ts');
 
 // ── 1. Leitura do CSV (delimitador ;) ────────────────────────────────────────
@@ -331,7 +331,7 @@ console.log('Gerando srag.ts...');
 
 const content = `// Gerado por scripts/export-data.mjs — NÃO edite manualmente.
 // Para regenerar: npm run data:export
-// Fonte: INFLUD26-20-07-2026.csv (SIVEP-Gripe — SRAG 2026)
+// Fonte: INFLUD26.csv (SIVEP-Gripe — SRAG 2026)
 
 export interface FrequencyRow {
   category: string;
